@@ -2184,16 +2184,6 @@ export function PracticePage() {
     submittingRef.current = false;
   }
 
-  const answeredCount = Object.keys(answers).filter((id) =>
-    questions.some((question) => question.id === id),
-  ).length;
-  const minutes = Math.floor(secondsLeft / 60);
-  const seconds = secondsLeft % 60;
-  const percentage =
-    result && result.total_questions > 0
-      ? Math.round((result.score / result.total_questions) * 100)
-      : 0;
-
   return (
     <div className="bl-site">
       <SiteHeader />
