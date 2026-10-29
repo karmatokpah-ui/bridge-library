@@ -22,6 +22,7 @@ import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SiteContentRouteImport } from './routes/site-content'
 import { Route as TeacherRouteImport } from './routes/teacher'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WassceRouteImport } from './routes/wassce'
@@ -94,6 +95,11 @@ const SettingsRoute = SettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SiteContentRoute = SiteContentRouteImport.update({
+  id: '/site-content',
+  path: '/site-content',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeacherRoute = TeacherRouteImport.update({
   id: '/teacher',
   path: '/teacher',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
+  '/site-content': typeof SiteContentRoute
   '/teacher': typeof TeacherRoute
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
+  '/site-content': typeof SiteContentRoute
   '/teacher': typeof TeacherRoute
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
+  '/site-content': typeof SiteContentRoute
   '/teacher': typeof TeacherRoute
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/practice'
     | '/privacy'
     | '/settings'
+    | '/site-content'
     | '/teacher'
     | '/terms'
     | '/wassce'
@@ -227,6 +237,7 @@ export interface FileRouteTypes {
     | '/practice'
     | '/privacy'
     | '/settings'
+    | '/site-content'
     | '/teacher'
     | '/terms'
     | '/wassce'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/practice'
     | '/privacy'
     | '/settings'
+    | '/site-content'
     | '/teacher'
     | '/terms'
     | '/wassce'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   PracticeRoute: typeof PracticeRoute
   PrivacyRoute: typeof PrivacyRoute
   SettingsRoute: typeof SettingsRoute
+  SiteContentRoute: typeof SiteContentRoute
   TeacherRoute: typeof TeacherRoute
   TermsRoute: typeof TermsRoute
   WassceRoute: typeof WassceRoute
@@ -371,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/site-content': {
+      id: '/site-content'
+      path: '/site-content'
+      fullPath: '/site-content'
+      preLoaderRoute: typeof SiteContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/teacher': {
       id: '/teacher'
       path: '/teacher'
@@ -430,6 +450,7 @@ const rootRouteChildren: RootRouteChildren = {
   PracticeRoute: PracticeRoute,
   PrivacyRoute: PrivacyRoute,
   SettingsRoute: SettingsRoute,
+  SiteContentRoute: SiteContentRoute,
   TeacherRoute: TeacherRoute,
   TermsRoute: TermsRoute,
   WassceRoute: WassceRoute,

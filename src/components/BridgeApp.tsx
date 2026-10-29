@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { INTRO_VIDEO_URL } from "@/config/video";
+import { useSiteContent } from "@/lib/site-content";
 import { resolveVideoSource, withAutoplay } from "@/lib/video";
 import { oauthReturnPath } from "@/lib/oauth-return-path";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
@@ -1490,7 +1491,7 @@ export function BridgeHome() {
           </div>
         </section>
 
-        {videoOpen ? <VideoModal url={INTRO_VIDEO_URL} onClose={() => setVideoOpen(false)} /> : null}
+        {videoOpen ? <VideoModal url={siteContent.data?.video_url ?? INTRO_VIDEO_URL} onClose={() => setVideoOpen(false)} /> : null}
 
         <section className="bl-container bl-section-sm">
           <h2 className="bl-h2 bl-center">Explore Our Learning Categories</h2>
