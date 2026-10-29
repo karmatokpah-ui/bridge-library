@@ -1654,4 +1654,4 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-socials a { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); }
 .bl-preview-body .bl-socials a { color: #fff; }
 .bl-search-btn ~ .bl-menu-btn { margin-left: 4px; }
-@media (min-width: 1024px) { .bl-search-btn { margin-left: 0; } }
+@media (min-width: 960px) { .bl-search-btn { margin-left: 0; } }
