@@ -1709,7 +1709,7 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-pt-options label.is-selected { border-color: var(--bl-blue); background: #eef4ff; }
 .bl-pt-options label.is-correct { border-color: var(--bl-green); background: #e9f8f1; }
 .bl-pt-options label.is-wrong { border-color: var(--bl-red); background: #fdecee; }
-.bl-pt-options input { accent-color: var(--bl-blue); width: 18px; height: 18px; }
+.bl-pt-options input { accent-color: var(--bl-blue); width: 18px; height: 18px; flex: none; }
 .bl-pt-explain { display: flex; gap: 10px; margin-top: 16px; background: #eef4ff; border-radius: 10px; padding: 14px; color: var(--bl-text); font-size: .9rem; }
 .bl-pt-explain svg { color: var(--bl-blue); flex: none; }
 .bl-pt-hint { margin-top: 14px; font-size: .82rem; color: var(--bl-muted); }
