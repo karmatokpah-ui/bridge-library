@@ -50,7 +50,9 @@ const categoryKeywords: Record<string, string[]> = {
 function subjectImage(name: string) {
   const n = name.toLowerCase();
   if (n.includes("math") || n.includes("account") || n.includes("econom")) return mathImg;
-  if (n.includes("english") || n.includes("literature")) return englishImg;
+  if (n.includes("physics")) return wassceImg;
+  if (n.includes("literature")) return aboutImg;
+  if (n.includes("english")) return englishImg;
   if (["biology", "chemistry", "physics", "science", "agric"].some((k) => n.includes(k))) return scienceImg;
   if (["government", "history", "geography", "social", "civic"].some((k) => n.includes(k))) return socialImg;
   if (n.includes("ict") || n.includes("computer")) return aboutImg;
@@ -76,7 +78,7 @@ function CoursesPage() {
       return inCat && inQuery;
     });
     const rank = (n: string) => {
-      const i = popularOrder.findIndex((k) => n.toLowerCase().includes(k));
+      const i = popularOrder.findIndex((k) => n.toLowerCase().startsWith(k));
       return i === -1 ? 99 : i;
     };
     return [...list].sort((a, b) =>

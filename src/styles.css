@@ -1641,3 +1641,6 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-cta-points span { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .92rem; }
 .bl-cta-points svg { background: var(--bl-blue); padding: 6px; width: 32px; height: 32px; border-radius: 8px; }
 @media (min-width: 900px) { .bl-courses-cta { grid-template-columns: 0.9fr 1.1fr; align-items: center; } .bl-courses-cta img { height: 100%; min-height: 300px; } .bl-courses-cta-copy { padding: 36px 48px; } }
+.bl-sort { white-space: nowrap; }
+.bl-photo-course h3, .bl-more-card h3 { font-weight: 700; }
+@media (max-width: 640px) { .bl-page-hero::before { background: linear-gradient(180deg, rgba(6,43,89,.92), rgba(6,43,89,.8)); } }
