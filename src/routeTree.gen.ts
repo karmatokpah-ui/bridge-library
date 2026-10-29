@@ -15,11 +15,15 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as ManagementRouteImport } from './routes/management'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PracticeRouteImport } from './routes/practice'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as TeacherRouteImport } from './routes/teacher'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WassceRouteImport } from './routes/wassce'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as CoursesSubjectIdRouteImport } from './routes/courses_.$subjectId'
@@ -55,6 +59,16 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeaturesRoute = FeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ManagementRoute = ManagementRouteImport.update({
   id: '/management',
   path: '/management',
@@ -70,6 +84,11 @@ const PracticeRoute = PracticeRouteImport.update({
   path: '/practice',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -78,6 +97,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const TeacherRoute = TeacherRouteImport.update({
   id: '/teacher',
   path: '/teacher',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WassceRoute = WassceRouteImport.update({
@@ -109,11 +133,15 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/courses': typeof CoursesRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/features': typeof FeaturesRoute
   '/management': typeof ManagementRoute
   '/mcp': typeof McpRoute
   '/practice': typeof PracticeRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/teacher': typeof TeacherRoute
+  '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
@@ -126,11 +154,15 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/courses': typeof CoursesRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/features': typeof FeaturesRoute
   '/management': typeof ManagementRoute
   '/mcp': typeof McpRoute
   '/practice': typeof PracticeRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/teacher': typeof TeacherRoute
+  '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
@@ -144,11 +176,15 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/courses': typeof CoursesRoute
   '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/features': typeof FeaturesRoute
   '/management': typeof ManagementRoute
   '/mcp': typeof McpRoute
   '/practice': typeof PracticeRoute
+  '/privacy': typeof PrivacyRoute
   '/settings': typeof SettingsRoute
   '/teacher': typeof TeacherRoute
+  '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/courses_/$subjectId': typeof CoursesSubjectIdRoute
@@ -163,11 +199,15 @@ export interface FileRouteTypes {
     | '/contact'
     | '/courses'
     | '/dashboard'
+    | '/faq'
+    | '/features'
     | '/management'
     | '/mcp'
     | '/practice'
+    | '/privacy'
     | '/settings'
     | '/teacher'
+    | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
     | '/courses/$subjectId'
@@ -180,11 +220,15 @@ export interface FileRouteTypes {
     | '/contact'
     | '/courses'
     | '/dashboard'
+    | '/faq'
+    | '/features'
     | '/management'
     | '/mcp'
     | '/practice'
+    | '/privacy'
     | '/settings'
     | '/teacher'
+    | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
     | '/courses/$subjectId'
@@ -197,11 +241,15 @@ export interface FileRouteTypes {
     | '/contact'
     | '/courses'
     | '/dashboard'
+    | '/faq'
+    | '/features'
     | '/management'
     | '/mcp'
     | '/practice'
+    | '/privacy'
     | '/settings'
     | '/teacher'
+    | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
     | '/courses_/$subjectId'
@@ -215,11 +263,15 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CoursesRoute: typeof CoursesRoute
   DashboardRoute: typeof DashboardRoute
+  FaqRoute: typeof FaqRoute
+  FeaturesRoute: typeof FeaturesRoute
   ManagementRoute: typeof ManagementRoute
   McpRoute: typeof McpRoute
   PracticeRoute: typeof PracticeRoute
+  PrivacyRoute: typeof PrivacyRoute
   SettingsRoute: typeof SettingsRoute
   TeacherRoute: typeof TeacherRoute
+  TermsRoute: typeof TermsRoute
   WassceRoute: typeof WassceRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   CoursesSubjectIdRoute: typeof CoursesSubjectIdRoute
@@ -270,6 +322,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/features': {
+      id: '/features'
+      path: '/features'
+      fullPath: '/features'
+      preLoaderRoute: typeof FeaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/management': {
       id: '/management'
       path: '/management'
@@ -291,6 +357,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
@@ -303,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/teacher'
       fullPath: '/teacher'
       preLoaderRoute: typeof TeacherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wassce': {
@@ -343,11 +423,15 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CoursesRoute: CoursesRoute,
   DashboardRoute: DashboardRoute,
+  FaqRoute: FaqRoute,
+  FeaturesRoute: FeaturesRoute,
   ManagementRoute: ManagementRoute,
   McpRoute: McpRoute,
   PracticeRoute: PracticeRoute,
+  PrivacyRoute: PrivacyRoute,
   SettingsRoute: SettingsRoute,
   TeacherRoute: TeacherRoute,
+  TermsRoute: TermsRoute,
   WassceRoute: WassceRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
