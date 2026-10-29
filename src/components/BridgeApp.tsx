@@ -2069,7 +2069,13 @@ export function PracticePage() {
       setSecondsLeft(30 * 60);
       setExamStarted(true);
     } catch (error) {
-      setErrorMessage(getErrorMessage(error, "Could not load the questions. Please try again."));
+      const { data: who } = await supabase.auth.getUser();
+      if (!who.user) {
+        setAuthRequired(true);
+        setErrorMessage("Please sign in to start a practice test.");
+      } else {
+        setErrorMessage(getErrorMessage(error, "Could not load the questions. Please try again."));
+      }
     } finally {
       setLoading(false);
     }
