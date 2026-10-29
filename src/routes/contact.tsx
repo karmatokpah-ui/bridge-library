@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HelpCircle, KeyRound, LifeBuoy } from "lucide-react";
-import { SiteLayout } from "@/components/site/SiteChrome";
+import { ContactDetails, SiteLayout } from "@/components/site/SiteChrome";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -68,12 +68,7 @@ function ContactPage() {
             </a>
           </article>
         </div>
-        <div className="bl-empty bl-mt">
-          <h3>Direct contact details coming soon</h3>
-          <p>
-            Official BridgeLIB phone, email and social accounts will be listed here once published.
-          </p>
-        </div>
+        <ContactDetails />
       </section>
     </SiteLayout>
   );

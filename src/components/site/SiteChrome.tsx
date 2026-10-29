@@ -16,6 +16,45 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import shieldImg from "@/assets/bridgelib-shield.png";
+import { safeUrl, useSiteContent } from "@/lib/site-content";
+
+const socials = [
+  ["facebook", "Facebook"],
+  ["x", "X"],
+  ["youtube", "YouTube"],
+  ["instagram", "Instagram"],
+  ["linkedin", "LinkedIn"],
+] as const;
+
+function ContactLines() {
+  const c = useSiteContent().data ?? {};
+  const social = socials.flatMap(([k, label]) => {
+    const href = safeUrl(c[k]);
+    return href ? [{ href, label }] : [];
+  });
+  return (
+    <>
+      {c.contact_address ? <span>{c.contact_address}</span> : null}
+      {c.contact_phone ? <a href={`tel:${c.contact_phone.replace(/[^+\d]/g, "")}`}>{c.contact_phone}</a> : null}
+      {c.contact_email ? <a href={`mailto:${c.contact_email}`}>{c.contact_email}</a> : null}
+      {social.map((s) => (
+        <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+      ))}
+      {!c.contact_address && !c.contact_phone && !c.contact_email && social.length === 0 ? (
+        <Link to="/contact">Contact &amp; help</Link>
+      ) : null}
+    </>
+  );
+}
+
+export function ContactDetails() {
+  return (
+    <div className="bl-card bl-mt" style={{ padding: 22, display: "grid", gap: 8 }}>
+      <h3 style={{ margin: 0, color: "var(--bl-navy)" }}>Contact BridgeLIB</h3>
+      <ContactLines />
+    </div>
+  );
+}
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
@@ -156,6 +195,10 @@ export function SiteFooter() {
           <Link to="/privacy">Privacy Policy</Link>
           <Link to="/contact">Contact Us</Link>
           <a href="/?auth=login">Sign in / Reset password</a>
+        </div>
+        <div>
+          <h4>Contact Us</h4>
+          <ContactLines />
         </div>
       </div>
       <div className="bl-container bl-footer-bottom">
