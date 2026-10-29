@@ -35,6 +35,7 @@ const navLinks = [
   { to: "/about", label: "About" },
   { to: "/courses", label: "Courses" },
   { to: "/wassce", label: "WASSCE" },
+  { to: "/features", label: "Features" },
   { to: "/practice", label: "Practice" },
   { to: "/contact", label: "Contact" },
 ] as const;
@@ -138,17 +139,23 @@ export function SiteFooter() {
           <Link to="/about">About</Link>
           <Link to="/courses">Courses</Link>
           <Link to="/wassce">WASSCE</Link>
+          <Link to="/contact">Contact</Link>
         </div>
         <div>
-          <h4>Learning</h4>
-          <Link to="/practice">Practice exams</Link>
-          <a href="/?auth=signup">Create account</a>
-          <a href="/?auth=login">Sign in</a>
+          <h4>Learning Resources</h4>
+          <Link to="/practice">Past Questions</Link>
+          <Link to="/courses">Study Notes</Link>
+          <Link to="/practice">Mock Tests</Link>
+          <Link to="/courses">Video Lessons</Link>
+          <Link to="/dashboard">Certificates &amp; Progress</Link>
         </div>
         <div>
-          <h4>Support</h4>
-          <Link to="/contact">Contact &amp; help</Link>
-          <a href="/?auth=login">Reset password</a>
+          <h4>Help &amp; Support</h4>
+          <Link to="/faq">FAQs</Link>
+          <Link to="/terms">Terms of Service</Link>
+          <Link to="/privacy">Privacy Policy</Link>
+          <Link to="/contact">Contact Us</Link>
+          <a href="/?auth=login">Sign in / Reset password</a>
         </div>
       </div>
       <div className="bl-container bl-footer-bottom">
