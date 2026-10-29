@@ -19,6 +19,13 @@ import {
   PlayCircle,
   Timer,
   TrendingUp,
+  FileText,
+  ClipboardCheck,
+  NotebookPen,
+  Laptop,
+  Wrench,
+  Target,
+  HeartHandshake,
 } from "lucide-react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
@@ -43,6 +50,8 @@ import heroImg from "@/assets/hero-student.jpg";
 import { useQueryClient } from "@tanstack/react-query";
 import sunsetImg from "@/assets/liberia-sunset.jpg";
 import homeHeroImg from '@/assets/home-hero-girl.jpg';
+import wassceImg from '@/assets/wassce-hero.jpg';
+import joinImg from '@/assets/hero-student.jpg';
 import shieldImg from '@/assets/bridgelib-shield.png';
 import { FeaturedCourses } from '@/components/learning/FeaturedCourses';
 
@@ -1437,66 +1446,140 @@ export function BridgeHome() {
       <main>
         <section className="bl-hero" id="hero" style={{ backgroundImage: `url(${homeHeroImg})` }}>
           <div className="bl-container bl-hero-inner">
-            <h1 className="bl-hero-brand">
+            <p className="bl-hero-brand">
               <img src={shieldImg} alt="" width={64} height={64} />
               <span>
-                Bridge<span className="bl-red">LIB</span> –
+                Bridge<span className="bl-red">LIB</span>
               </span>
+            </p>
+            <h1 className="bl-hero-title">
+              Learn Today,
+              <br />
+              Build <span className="bl-red">Tomorrow.</span>
             </h1>
-            <p className="bl-hero-sub">Learn Today, Build Tomorrow</p>
             <p className="bl-hero-text">
               Your complete online learning platform for Liberia. Study, practice, and achieve your
               goals with ease.
             </p>
             <div className="bl-hero-actions">
               <button className="bl-btn bl-btn-red" onClick={() => openAuth("signup")}>
-                Get Started Free
+                Get Started Free <ArrowRight size={18} />
               </button>
               <button type="button" className="bl-btn bl-btn-ghost" onClick={() => setVideoOpen(true)}>
                 Watch Video <PlayCircle size={18} />
               </button>
             </div>
           </div>
+          <div className="bl-container">
+            <div className="bl-benefit-strip">
+              {[
+                [<GraduationCap key="a" size={26} />, "Quality Education", "Learn at your own pace"],
+                [<FileText key="b" size={26} />, "WASSCE Preparation", "Past Questions & Practice"],
+                [<TrendingUp key="c" size={26} />, "Progress Tracking", "Track your growth"],
+                [<UsersRound key="d" size={26} />, "For a Better Liberia", "Empowering the next generation"],
+              ].map(([icon, title, sub]) => (
+                <div className="bl-benefit-item" key={String(title)}>
+                  <span className="bl-benefit-dot">{icon}</span>
+                  <span>
+                    <b>{title}</b>
+                    <small>{sub}</small>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         {videoOpen ? <VideoModal url={INTRO_VIDEO_URL} onClose={() => setVideoOpen(false)} /> : null}
 
-        <section className="bl-container bl-benefits">
-          {[
-            [<Timer key="a" size={30} />, "Quality Education", "Learn at your own pace", "blue"],
-            [<GraduationCap key="b" size={30} />, "WASSCE Preparation", "Practice past questions", "purple"],
-            [<TrendingUp key="c" size={30} />, "Progress Tracking", "Track your growth", "green"],
-            [<MapPin key="d" size={30} />, "For a Better Liberia", "Empowering the next generation", "red"],
-          ].map(([icon, title, sub, tone]) => (
-            <div className="bl-card bl-benefit" key={String(title)}>
-              <span className={`bl-benefit-icon ${String(tone)}`}>{icon}</span>
-              <b>{title}</b>
-              <small>{sub}</small>
-            </div>
-          ))}
-        </section>
-
         <section className="bl-container bl-section-sm">
           <h2 className="bl-h2 bl-center">Explore Our Learning Categories</h2>
+          <p className="bl-muted bl-center">
+            Choose from a wide range of subjects and resources designed to help you succeed.
+          </p>
           <div className="bl-cats">
             {learningCategories.map((c) => (
               <Link to="/courses" className="bl-card bl-cat" key={c}>
                 <SubjectIcon name={c} />
-                <span>{c}</span>
+                <span className="bl-cat-row">
+                  {c} <ArrowRight size={16} />
+                </span>
               </Link>
             ))}
           </div>
         </section>
 
+        <FeaturedCourses />
+
         <section className="bl-container">
-          <div className="bl-quote-band">
-            <p>“Education is the key to a brighter future for every Liberian.”</p>
-            <button className="bl-btn bl-btn-red bl-btn-sm" onClick={() => openAuth("signup")}>
-              Join BridgeLIB Today
-            </button>
+          <div className="bl-wassce-band">
+            <div className="bl-wassce-copy">
+              <h2>WASSCE Preparation</h2>
+              <p className="bl-wassce-sub">Past Questions, Mock Tests, Study Notes and More</p>
+              <p>
+                Get ready for your WASSCE with our comprehensive preparation resources. Practice past
+                questions, take mock tests, and improve your performance.
+              </p>
+              <div className="bl-hero-actions">
+                <Link to="/practice" className="bl-btn bl-btn-red">
+                  Start Practicing <ArrowRight size={18} />
+                </Link>
+                <Link to="/wassce" className="bl-btn bl-btn-ghost">
+                  Learn More
+                </Link>
+              </div>
+            </div>
+            <ul className="bl-wassce-list">
+              {[
+                [<FileText key="a" size={20} />, "Past Questions", "Real exam questions"],
+                [<ClipboardCheck key="b" size={20} />, "Mock Tests", "Timed practice tests"],
+                [<NotebookPen key="c" size={20} />, "Study Notes", "Key concepts & tips"],
+                [<TrendingUp key="d" size={20} />, "Progress Tracking", "Monitor your progress"],
+              ].map(([icon, t, s]) => (
+                <li key={String(t)}>
+                  <span className="bl-wassce-ico">{icon}</span>
+                  <span>
+                    <b>{t}</b>
+                    <small>{s}</small>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <img className="bl-wassce-img" src={wassceImg} alt="Student studying for WASSCE" loading="lazy" />
           </div>
         </section>
-        <FeaturedCourses />
+
+        <section className="bl-container">
+          <div className="bl-join">
+            <img src={joinImg} alt="Liberian student holding books" loading="lazy" />
+            <div className="bl-join-copy">
+              <h2>Join BridgeLIB Today</h2>
+              <p className="bl-muted">
+                Be part of a growing community of learners, teachers and schools working together for a
+                brighter Liberia.
+              </p>
+              <div className="bl-join-points">
+                {[
+                  [<Laptop key="a" size={20} />, "Learn", "anytime, anywhere"],
+                  [<Wrench key="b" size={20} />, "Build", "new skills"],
+                  [<Target key="c" size={20} />, "Achieve", "your goals"],
+                  [<HeartHandshake key="d" size={20} />, "Help", "build a better Liberia"],
+                ].map(([icon, t, s]) => (
+                  <div key={String(t)}>
+                    <span className="bl-join-ico">{icon}</span>
+                    <span>
+                      <b>{t}</b>
+                      <small>{s}</small>
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <button className="bl-btn bl-btn-red" onClick={() => openAuth("signup")}>
+                Get Started Free <ArrowRight size={18} />
+              </button>
+            </div>
+          </div>
+        </section>
 
         <section className="section" id="features">
           <div className="bridge-wrap">
