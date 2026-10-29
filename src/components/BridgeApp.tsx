@@ -19,6 +19,13 @@ import {
   PlayCircle,
   Timer,
   TrendingUp,
+  FileText,
+  ClipboardCheck,
+  NotebookPen,
+  Laptop,
+  Wrench,
+  Target,
+  HeartHandshake,
 } from "lucide-react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
