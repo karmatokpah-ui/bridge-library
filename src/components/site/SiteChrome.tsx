@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import shieldImg from "@/assets/bridgelib-shield.png";
-import { safeUrl, useSiteContent } from "@/lib/site-content";
+import { safeUrl, useSiteContent, type SiteContent } from "@/lib/site-content";
 
 const socials = [
   ["facebook", "Facebook"],
@@ -26,8 +26,9 @@ const socials = [
   ["linkedin", "LinkedIn"],
 ] as const;
 
-function ContactLines() {
-  const c = useSiteContent().data ?? {};
+export function ContactLines({ content }: { content?: SiteContent } = {}) {
+  const live = useSiteContent().data;
+  const c = content ?? live ?? {};
   const social = socials.flatMap(([k, label]) => {
     const href = safeUrl(c[k]);
     return href ? [{ href, label }] : [];
