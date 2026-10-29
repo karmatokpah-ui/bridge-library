@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { SiteLayout } from "./SiteChrome";
+import { parseBlocks, useSiteContent } from "@/lib/site-content";
 
 function PageShell({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
   return (
@@ -65,7 +66,7 @@ export function FaqPage() {
   return (
     <PageShell title="Frequently Asked Questions" intro="Quick answers to common questions about BridgeLIB.">
       <div style={{ display: "grid", gap: 12 }}>
-        {faqs.map(([q, a]) => (
+        {(parseBlocks(useSiteContent().data?.faq).length ? parseBlocks(useSiteContent().data?.faq) : faqs).map(([q, a]) => (
           <details key={q} className="bl-card" style={{ padding: 18 }}>
             <summary style={{ fontWeight: 700, cursor: "pointer", color: "var(--bl-navy)" }}>{q}</summary>
             <p className="bl-muted" style={{ margin: "10px 0 0" }}>{a}</p>
@@ -93,10 +94,11 @@ function Sections({ items }: { items: Array<[string, string]> }) {
 }
 
 export function TermsPage() {
+  const custom = parseBlocks(useSiteContent().data?.terms);
   return (
     <PageShell title="Terms of Service" intro="The rules for using BridgeLIB.">
       <Sections
-        items={[
+        items={custom.length ? custom : [
           ["Using BridgeLIB", "BridgeLIB is an educational platform. Use it for learning and teaching only."],
           ["Your account", "Keep your password private. You are responsible for activity on your account."],
           ["Content", "Lessons, questions and materials are provided for personal study and may not be resold."],
@@ -109,10 +111,11 @@ export function TermsPage() {
 }
 
 export function PrivacyPage() {
+  const custom = parseBlocks(useSiteContent().data?.privacy);
   return (
     <PageShell title="Privacy Policy" intro="How BridgeLIB handles your information.">
       <Sections
-        items={[
+        items={custom.length ? custom : [
           ["What we collect", "Your name, email, school details you provide, and your learning progress."],
           ["How we use it", "To run your account, show your progress, and let teachers see their class results."],
           ["Sharing", "We do not sell your data. Teachers only see students in their own classes."],

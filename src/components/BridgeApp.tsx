@@ -613,6 +613,7 @@ export function BridgeHome() {
   const [schoolBusy, setSchoolBusy] = useState(false);
   const [schoolMessage, setSchoolMessage] = useState<Toast>(null);
   const [videoOpen, setVideoOpen] = useState(false);
+  const siteContent = useSiteContent();
 
   useEffect(() => {
     let active = true;
