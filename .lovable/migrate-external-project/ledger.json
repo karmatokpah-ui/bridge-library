@@ -1,0 +1,12 @@
+{
+  "source": "https://github.com/Exploit-009/BridgeLIB (main @ 959b95b)",
+  "capabilities": [
+    {"capability": "React learner app (landing, auth, dashboard, school application)", "source": "artifacts/bridgelib", "outcome": "ported to TanStack Start routes /, /admin, /practice", "status": "verified", "next_action": "none"},
+    {"capability": "Supabase auth (signup, login, logout, password reset/recovery)", "source": "artifacts/bridgelib/src/lib/supabase.ts", "outcome": "preserved against existing external Supabase project", "status": "verified", "next_action": "none"},
+    {"capability": "Practice exams with submit_exam_attempt RPC + demo fallback", "source": "artifacts/bridgelib/src/App.tsx", "outcome": "ported unchanged", "status": "verified", "next_action": "none"},
+    {"capability": "Admin content management (subjects, lessons, exam questions)", "source": "artifacts/bridgelib/src/pages/admin-dashboard.tsx", "outcome": "ported unchanged, client role gate + Supabase RLS", "status": "verified", "next_action": "confirm RLS policies on the existing backend remain as intended"},
+    {"capability": "Express API server", "source": "artifacts/api-server", "outcome": "not ported — only route was GET /api/healthz, no app logic", "status": "verified", "next_action": "none"},
+    {"capability": "Schema/RLS/RPC definitions", "source": "not in repo (live in existing Supabase project)", "outcome": "untouched; existing backend preserved as-is", "status": "verified", "next_action": "none"},
+    {"capability": "Replit-only tooling, legacy-foundation static site, mockup-sandbox", "source": "repo root", "outcome": "deliberately excluded", "status": "verified", "next_action": "none"}
+  ]
+}

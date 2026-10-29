@@ -1,0 +1,3 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { ManagementPage } from '@/components/admin/Management';
+export const Route=createFileRoute('/management')({head:()=>({meta:[{title:'Platform management — BridgeLIB'},{name:'description',content:'Administrator feature, user, school, and resource management.'},{property:'og:title',content:'Platform management — BridgeLIB'},{property:'og:description',content:'Manage BridgeLIB features and records securely.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:ManagementPage});

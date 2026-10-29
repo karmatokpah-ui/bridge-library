@@ -1,0 +1,3 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { LearningWorkspace } from '@/components/learning/Workspace';
+export const Route=createFileRoute('/dashboard')({head:()=>({meta:[{title:'My learning — BridgeLIB'},{name:'description',content:'Your saved courses, lessons, classes, and practice history.'},{property:'og:title',content:'My learning — BridgeLIB'},{property:'og:description',content:'Your BridgeLIB learning progress.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:LearningWorkspace});
