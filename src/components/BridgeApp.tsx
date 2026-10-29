@@ -48,6 +48,7 @@ import {
   learningCategories,
 } from "@/components/site/SiteChrome";
 import heroImg from "@/assets/hero-student.jpg";
+import { PracticeView } from "@/components/practice/PracticeView";
 import { useQueryClient } from "@tanstack/react-query";
 import sunsetImg from "@/assets/liberia-sunset.jpg";
 import homeHeroImg from '@/assets/home-hero-girl.jpg';
@@ -2196,231 +2197,26 @@ export function PracticePage() {
   return (
     <div className="bl-site">
       <SiteHeader />
-      <main className="bl-practice">
-        <div className="mx-auto max-w-4xl">
-          <Link to="/" className="text-blue-600 hover:underline">
-            ← Back to BridgeLIB
-          </Link>
-
-          <h1 className="mt-6 text-3xl font-bold text-slate-900">Practice Exams</h1>
-          <p className="mt-2 text-slate-600">
-            Practise your subjects, track your score, and learn from explanations.
-          </p>
-
-          {errorMessage && (
-            <div
-              role="alert"
-              className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-900"
-            >
-              <p>{errorMessage}</p>
-              {authRequired && (
-                <Link to="/" className="mt-3 inline-block font-semibold text-blue-700 underline">
-                  Return to BridgeLIB to sign in
-                </Link>
-              )}
-            </div>
-          )}
-
-          {!examStarted && !result && (
-            <section className="mt-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="text-xl font-semibold">Choose your subject</h2>
-
-              <label
-                htmlFor="practice-subject"
-                className="mt-4 block text-sm font-medium text-slate-700"
-              >
-                Subject
-              </label>
-
-              <select
-                id="practice-subject"
-                value={subjectId}
-                onChange={(event) => {
-                  setSubjectId(event.target.value);
-                  setErrorMessage("");
-                }}
-                className="mt-2 w-full rounded-lg border border-slate-300 bg-white p-3"
-                disabled={loading}
-              >
-                <option value="">Select a subject</option>
-                {subjects.map((subject) => (
-                  <option key={subject.id} value={subject.id}>
-                    {subject.name}
-                  </option>
-                ))}
-              </select>
-
-              {subjects.length === 0 && !loading && !errorMessage && (
-                <p className="mt-3 text-sm text-slate-500">No subjects are available yet.</p>
-              )}
-
-              <p className="mt-3 text-sm text-slate-500">
-                Up to 20 published questions per session · 30-minute timer
-              </p>
-
-              <button
-                type="button"
-                onClick={() => void startExam()}
-                disabled={loading || !subjectId}
-                className="mt-5 w-full rounded-lg bg-[#0b5fff] px-5 py-3 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {loading ? "Loading…" : "Start Practice"}
-              </button>
-            </section>
-          )}
-
-          {examStarted && !result && (
-            <>
-              {isDemoExam && (
-                <p className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
-                  Testing mode: these original sample questions are built into the app because this
-                  subject has no published database questions yet. Results are for testing only and
-                  are not saved to your account.
-                </p>
-              )}
-
-              <section className="mt-5 rounded-xl border border-slate-200 bg-white p-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span className="font-medium text-slate-700">
-                    Answered: {answeredCount} / {questions.length}
-                  </span>
-                  <span
-                    className={`font-bold tabular-nums ${
-                      secondsLeft < 300 ? "text-red-600" : "text-slate-900"
-                    }`}
-                    aria-live="polite"
-                  >
-                    Time: {minutes}:{String(seconds).padStart(2, "0")}
-                  </span>
-                </div>
-
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    className="h-full rounded-full bg-[#0b5fff] transition-all"
-                    style={{
-                      width: `${(answeredCount / questions.length) * 100}%`,
-                    }}
-                  />
-                </div>
-              </section>
-
-              {questions.map((question, index) => (
-                <section
-                  key={question.id}
-                  className="mt-4 rounded-xl border border-slate-200 bg-white p-5"
-                >
-                  <p className="text-sm font-semibold text-blue-700">
-                    Question {index + 1} of {questions.length}
-                  </p>
-
-                  <h2 className="mt-2 font-semibold text-slate-900">{question.prompt}</h2>
-
-                  <div className="mt-4 space-y-3">
-                    {question.options.map((option) => (
-                      <label
-                        key={option.id}
-                        className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 ${
-                          answers[question.id] === option.id
-                            ? "border-blue-500 bg-blue-50"
-                            : "border-slate-200"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name={`question-${question.id}`}
-                          value={option.id}
-                          checked={answers[question.id] === option.id}
-                          onChange={() =>
-                            setAnswers((previous) => ({
-                              ...previous,
-                              [question.id]: option.id,
-                            }))
-                          }
-                          className="mt-1"
-                        />
-                        <span>{option.text}</span>
-                      </label>
-                    ))}
-                  </div>
-                </section>
-              ))}
-
-              <button
-                type="button"
-                onClick={() => void submitExam()}
-                disabled={submitting}
-                className="mt-5 w-full rounded-lg bg-[#0b5fff] px-5 py-3 font-semibold text-white disabled:opacity-50"
-              >
-                {submitting ? "Marking exam…" : "Submit Exam"}
-              </button>
-            </>
-          )}
-
-          {result && (
-            <section className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
-              <h2 className="text-2xl font-bold text-slate-900">Your Results</h2>
-
-              <p className="mt-3 text-lg">
-                Score:{" "}
-                <strong>
-                  {result.score} / {result.total_questions}
-                </strong>
-              </p>
-
-              <p className="mt-1 text-slate-600">
-                Percentage: <strong>{percentage}%</strong>
-              </p>
-
-              <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-200">
-                <div
-                  className="h-full rounded-full bg-[#0b5fff]"
-                  style={{ width: `${percentage}%` }}
-                />
-              </div>
-
-              <h3 className="mt-6 text-xl font-semibold">Review answers</h3>
-
-              {review.length === 0 && (
-                <p className="mt-3 text-slate-600">
-                  The server did not return answer explanations for this attempt.
-                </p>
-              )}
-
-              {review.map((item, index) => (
-                <div key={item.question_id} className="mt-4 border-t border-slate-200 pt-4">
-                  <p className="font-semibold">
-                    {index + 1}. {item.prompt}
-                  </p>
-
-                  <p
-                    className={`mt-2 font-medium ${
-                      item.is_correct ? "text-green-700" : "text-red-700"
-                    }`}
-                  >
-                    {item.is_correct ? "Correct" : "Incorrect"}
-                  </p>
-
-                  <p className="mt-1 text-sm text-slate-600">
-                    Correct option: {item.correct_option}
-                  </p>
-
-                  {item.explanation && (
-                    <p className="mt-2 text-slate-700">Explanation: {item.explanation}</p>
-                  )}
-                </div>
-              ))}
-
-              <button
-                type="button"
-                onClick={resetPractice}
-                className="mt-6 w-full rounded-lg bg-[#0b5fff] px-5 py-3 font-semibold text-white"
-              >
-                Practise Another Subject
-              </button>
-            </section>
-          )}
-        </div>
-      </main>
+      <PracticeView
+        subjects={subjects}
+        subjectId={subjectId}
+        onSubject={(id) => { setSubjectId(id); setErrorMessage(""); }}
+        questions={questions}
+        answers={answers}
+        onAnswer={(qid, oid) => setAnswers((prev) => ({ ...prev, [qid]: oid }))}
+        result={result}
+        review={review}
+        secondsLeft={secondsLeft}
+        loading={loading}
+        examStarted={examStarted}
+        isDemoExam={isDemoExam}
+        submitting={submitting}
+        errorMessage={errorMessage}
+        authRequired={authRequired}
+        onStart={() => void startExam()}
+        onSubmit={() => void submitExam()}
+        onReset={resetPractice}
+      />
       <SiteFooter />
     </div>
   );
