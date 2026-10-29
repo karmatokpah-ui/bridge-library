@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpenText, ChevronRight, Home, Laptop, Search, Target, Layers3 } from "lucide-react";
 import heroImg from "@/assets/home-hero-girl.jpg";
@@ -35,6 +35,8 @@ export const Route = createFileRoute("/courses")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { q?: string } =>
+    typeof search["q"] === "string" && search["q"] ? { q: search["q"] } : {},
   component: CoursesPage,
 });
 
@@ -63,8 +65,10 @@ const popularOrder = ["math", "english", "biology", "chemistry", "physics", "gov
 
 function CoursesPage() {
   const { subjects, state } = useSubjects();
-  const [draft, setDraft] = useState("");
-  const [query, setQuery] = useState("");
+  const { q: initialQ = "" } = Route.useSearch();
+  const [draft, setDraft] = useState(initialQ);
+  const [query, setQuery] = useState(initialQ);
+  useEffect(() => { setDraft(initialQ); setQuery(initialQ); }, [initialQ]);
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("popular");
 

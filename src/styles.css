@@ -1647,3 +1647,11 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-preview-modal { width: min(920px, 94vw); max-height: 90vh; overflow: auto; padding: 18px; display: grid; gap: 14px; }
 .bl-preview-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
 .bl-preview-body { min-height: 200px; }
+.bl-search-btn { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; cursor: pointer; margin-left: auto; }
+.bl-header-search { display: flex; gap: 8px; padding: 10px 0 14px; }
+.bl-header-search input { flex: 1; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--bl-border); }
+.bl-socials { display: flex !important; gap: 8px; flex-wrap: wrap; }
+.bl-socials a { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); }
+.bl-preview-body .bl-socials a { color: #fff; }
+.bl-search-btn ~ .bl-menu-btn { margin-left: 4px; }
+@media (min-width: 960px) { .bl-search-btn { margin-left: 0; } }
