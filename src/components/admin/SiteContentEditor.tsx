@@ -3,7 +3,11 @@ import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { WorkspaceShell } from "@/components/learning/Workspace";
 import { supabase } from "@/lib/supabase";
+import { ContactLines } from "@/components/site/SiteChrome";
+import { Sections } from "@/components/site/InfoPages";
+import { resolveVideoSource } from "@/lib/video";
 import {
+  parseBlocks,
   saveSiteContent,
   siteContentQueryKey,
   siteFields,
@@ -32,6 +36,8 @@ export function SiteContentEditor() {
   const [values, setValues] = useState<SiteContent>({});
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
+  const [preview, setPreview] = useState(false);
+  const dirty = JSON.stringify(values) !== JSON.stringify(content.data ?? {});
   useEffect(() => {
     if (content.data) setValues(content.data);
   }, [content.data]);
@@ -85,14 +91,125 @@ export function SiteContentEditor() {
               {hints[f.key] ? <small className="bl-muted" style={{ fontWeight: 400 }}>{hints[f.key]}</small> : null}
             </label>
           ))}
-          <div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <button type="button" className="bl-btn bl-btn-outline" onClick={() => setPreview(true)}>
+              Preview changes
+            </button>
             <button className="bl-btn bl-btn-primary" disabled={busy}>
               {busy ? "Saving…" : "Save website content"}
             </button>
           </div>
+          {dirty ? <p className="bl-muted">You have unsaved changes. Visitors still see the old content.</p> : null}
           {msg ? <p role="status" className="bl-notice">{msg}</p> : null}
         </form>
       )}
+      {preview ? (
+        <SitePreview
+          values={values}
+          busy={busy}
+          onClose={() => setPreview(false)}
+          onSave={async () => {
+            await onSubmit({ preventDefault() {} } as FormEvent);
+            setPreview(false);
+          }}
+        />
+      ) : null}
     </WorkspaceShell>
+  );
+}
+
+const previewTabs = [
+  ["video", "Watch Video"],
+  ["footer", "Footer & contact"],
+  ["faq", "FAQs"],
+  ["terms", "Terms"],
+  ["privacy", "Privacy"],
+] as const;
+
+function SitePreview({
+  values,
+  busy,
+  onClose,
+  onSave,
+}: {
+  values: SiteContent;
+  busy: boolean;
+  onClose: () => void;
+  onSave: () => void;
+}) {
+  const [tab, setTab] = useState<(typeof previewTabs)[number][0]>("video");
+  const video = resolveVideoSource(values.video_url);
+  const blocks = (k: "faq" | "terms" | "privacy") => parseBlocks(values[k]);
+  return (
+    <div className="bl-video-backdrop" role="presentation" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Preview website content"
+        className="bl-card bl-preview-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="bl-preview-bar">
+          <b>Preview — not saved yet</b>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button type="button" className="bl-btn bl-btn-outline bl-btn-sm" onClick={onClose}>
+              Keep editing
+            </button>
+            <button type="button" className="bl-btn bl-btn-primary bl-btn-sm" disabled={busy} onClick={onSave}>
+              {busy ? "Saving…" : "Looks good — save"}
+            </button>
+          </div>
+        </div>
+        <div className="bl-chips" role="tablist">
+          {previewTabs.map(([k, label]) => (
+            <button key={k} type="button" role="tab" aria-selected={tab === k}
+              className={`bl-chip ${tab === k ? "active" : ""}`} onClick={() => setTab(k)}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <div className="bl-preview-body">
+          {tab === "video" &&
+            (!values.video_url ? (
+              <p className="bl-muted">No link yet — visitors will see a “Video coming soon” message.</p>
+            ) : !video ? (
+              <p className="bl-notice">This link can’t be played. Use a YouTube, Vimeo or .mp4 link.</p>
+            ) : video.kind === "embed" ? (
+              <iframe className="bl-video-frame" src={video.src} title="Video preview" allow="encrypted-media; picture-in-picture" allowFullScreen />
+            ) : (
+              <video className="bl-video-frame" src={video.src} controls playsInline />
+            ))}
+          {tab === "footer" && (
+            <footer className="bl-footer" style={{ borderRadius: 12 }}>
+              <div className="bl-container bl-footer-grid" style={{ gridTemplateColumns: "1fr" }}>
+                <div>
+                  <h4>Contact Us</h4>
+                  <ContactLines content={values} />
+                </div>
+              </div>
+            </footer>
+          )}
+          {tab === "faq" &&
+            (blocks("faq").length ? (
+              <div style={{ display: "grid", gap: 10 }}>
+                {blocks("faq").map(([q, a]) => (
+                  <details key={q} className="bl-card" style={{ padding: 16 }} open>
+                    <summary style={{ fontWeight: 700, color: "var(--bl-navy)" }}>{q}</summary>
+                    <p className="bl-muted" style={{ margin: "8px 0 0" }}>{a}</p>
+                  </details>
+                ))}
+              </div>
+            ) : (
+              <p className="bl-muted">Empty — the website will keep showing the standard FAQs.</p>
+            ))}
+          {(tab === "terms" || tab === "privacy") &&
+            (blocks(tab).length ? (
+              <Sections items={blocks(tab)} />
+            ) : (
+              <p className="bl-muted">Empty — the website will keep showing the standard wording.</p>
+            ))}
+        </div>
+      </div>
+    </div>
   );
 }
