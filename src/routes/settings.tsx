@@ -1,0 +1,3 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { SettingsPage } from '@/components/learning/Workspace';
+export const Route=createFileRoute('/settings')({head:()=>({meta:[{title:'Account settings — BridgeLIB'},{name:'description',content:'Manage your BridgeLIB profile and account security.'},{property:'og:title',content:'Account settings — BridgeLIB'},{property:'og:description',content:'Your profile and security settings.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:SettingsPage});
