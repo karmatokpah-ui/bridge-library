@@ -80,7 +80,7 @@ export function FaqPage() {
   );
 }
 
-function Sections({ items }: { items: Array<[string, string]> }) {
+export function Sections({ items }: { items: Array<[string, string]> }) {
   return (
     <div style={{ display: "grid", gap: 18, maxWidth: 760 }}>
       {items.map(([h, t]) => (
