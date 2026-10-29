@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   Atom,
   BookOpenText,
@@ -10,6 +10,12 @@ import {
   Landmark,
   Leaf,
   Menu,
+  Search,
+  Facebook,
+  Twitter,
+  Youtube,
+  Instagram,
+  Linkedin,
   Monitor,
   X,
   type LucideIcon,
@@ -19,28 +25,34 @@ import shieldImg from "@/assets/bridgelib-shield.png";
 import { safeUrl, useSiteContent, type SiteContent } from "@/lib/site-content";
 
 const socials = [
-  ["facebook", "Facebook"],
-  ["x", "X"],
-  ["youtube", "YouTube"],
-  ["instagram", "Instagram"],
-  ["linkedin", "LinkedIn"],
+  ["facebook", "Facebook", Facebook],
+  ["x", "X", Twitter],
+  ["youtube", "YouTube", Youtube],
+  ["instagram", "Instagram", Instagram],
+  ["linkedin", "LinkedIn", Linkedin],
 ] as const;
 
 export function ContactLines({ content }: { content?: SiteContent } = {}) {
   const live = useSiteContent().data;
   const c = content ?? live ?? {};
-  const social = socials.flatMap(([k, label]) => {
+  const social = socials.flatMap(([k, label, Icon]) => {
     const href = safeUrl(c[k]);
-    return href ? [{ href, label }] : [];
+    return href ? [{ href, label, Icon }] : [];
   });
   return (
     <>
       {c.contact_address ? <span>{c.contact_address}</span> : null}
       {c.contact_phone ? <a href={`tel:${c.contact_phone.replace(/[^+\d]/g, "")}`}>{c.contact_phone}</a> : null}
       {c.contact_email ? <a href={`mailto:${c.contact_email}`}>{c.contact_email}</a> : null}
-      {social.map((s) => (
-        <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
-      ))}
+      {social.length ? (
+        <span className="bl-socials">
+          {social.map(({ href, label, Icon }) => (
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} title={label}>
+              <Icon size={16} />
+            </a>
+          ))}
+        </span>
+      ) : null}
       {!c.contact_address && !c.contact_phone && !c.contact_email && social.length === 0 ? (
         <Link to="/contact">Contact &amp; help</Link>
       ) : null}
@@ -103,7 +115,10 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const signedIn = useSignedIn();
 
-  useEffect(() => setOpen(false), [pathname]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [term, setTerm] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => { setOpen(false); setSearchOpen(false); }, [pathname]);
 
   const defaultActions = signedIn ? (
     <Link to="/dashboard" className="bl-btn bl-btn-primary bl-btn-sm">
@@ -137,6 +152,10 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
             </Link>
           ))}
         </nav>
+        <button type="button" className="bl-search-btn" aria-label="Search courses" aria-expanded={searchOpen}
+          onClick={() => setSearchOpen((v) => !v)}>
+          <Search size={18} />
+        </button>
         <div className="bl-header-actions">{actions ?? defaultActions}</div>
         <button
           type="button"
@@ -148,6 +167,14 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
+      {searchOpen && (
+        <form className="bl-container bl-header-search" role="search"
+          onSubmit={(e) => { e.preventDefault(); void navigate({ to: "/courses", search: term.trim() ? { q: term.trim() } : {} }); setSearchOpen(false); }}>
+          <input autoFocus type="search" value={term} onChange={(e) => setTerm(e.target.value)}
+            placeholder="Search for a course, subject, or topic…" aria-label="Search courses" />
+          <button className="bl-btn bl-btn-primary bl-btn-sm">Search</button>
+        </form>
+      )}
       {open && (
         <div className="bl-mobile-nav">
           {navLinks.map((l) => (
