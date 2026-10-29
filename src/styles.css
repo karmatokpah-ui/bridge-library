@@ -1593,3 +1593,4 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-join-points small { color: var(--bl-muted); }
 .bl-join-ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--bl-blue); color: #fff; flex-shrink: 0; }
 @media (min-width: 1024px) { .bl-join { grid-template-columns: .9fr 1.1fr; align-items: center; } .bl-join img { height: 100%; min-height: 300px; } .bl-join-copy { padding: 32px; } .bl-join-points { grid-template-columns: repeat(4, minmax(0,1fr)); } }
+@media (max-width: 479px) { .bl-cats { grid-template-columns: repeat(2, minmax(0,1fr)); } }
