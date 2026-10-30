@@ -1,0 +1,4 @@
+import {createFileRoute} from '@tanstack/react-router';
+import {PracticeMaterials} from '@/components/practice/PracticeMaterials';
+export const Route=createFileRoute('/practice_/past-questions')({validateSearch:(s:Record<string,unknown>):{subject?:string}=>typeof s['subject']==='string'?{subject:s['subject']}:{},head:()=>({meta:[{title:'Past Questions — BridgeLIB Liberia'},{name:'description',content:'Read published exam papers and review original BridgeLIB revision questions.'},{property:'og:title',content:'Past Questions — BridgeLIB Liberia'},{property:'og:description',content:'Published past papers and honestly labeled original revision questions.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),component:Papers});
+function Papers(){const {subject}=Route.useSearch();return <PracticeMaterials kind="papers" {...(subject?{subject}:{})}/>;}
