@@ -1974,3 +1974,12 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .auth-card .form-field { display: grid; gap: 7px; margin-bottom: 16px; }
 .auth-card .form-field small { display: block; color: var(--bl-muted); line-height: 1.6; font-size: .75rem; }
 .bl-study-step-course > h2 { font-size: 1.15rem; font-weight: 700; color: var(--bl-navy); margin-bottom: 12px; }
+.bl-issued-certificate { margin: 28px 0 18px; border: 3px double var(--bl-blue); background: var(--bl-surface); color: var(--bl-navy); padding: 36px 24px; display: grid; gap: 14px; justify-items: center; text-align: center; }
+.bl-issued-certificate h2 { font-size: 1.8rem; font-weight: 800; }
+.bl-issued-certificate h3 { font: 700 1.6rem Georgia,serif; margin: 18px 0; }
+.bl-issued-certificate strong { font-size: 1.8rem; font-weight: 750; }
+.bl-issued-certificate h4 { font-size: 1.35rem; font-weight: 700; }
+.bl-issued-certificate small { overflow-wrap: anywhere; max-width: 100%; color: var(--bl-muted); }
+.bl-cert-location { color: var(--bl-blue); font-size: .75rem; }
+.bl-cert-disclaimer { font-size: .75rem; color: var(--bl-muted); margin-top: 16px; }
+@media print { body * { visibility: hidden; } .bl-issued-certificate, .bl-issued-certificate * { visibility: visible; } .bl-issued-certificate { position: absolute; left: 0; top: 0; width: 100%; margin: 0; print-color-adjust: exact; } }
