@@ -108,11 +108,15 @@ export async function handleStudyChat(request: Request) {
       modelMessages,
       instructions,
     );
+    // Preserve provider access denials before sending any browser stream headers.
+    await call.gateway.waitForRunId();
+    const failure=call.getFailure();
+    if(failure)return reply(failure.message,failure.status);
     return await withLovableAiGatewayRunIdHeader(
       call.result.toUIMessageStreamResponse({
         originalMessages: messages as UIMessage[],
         sendReasoning: true,
-        onError: () => "AI study guidance is unavailable. Please try again later.",
+        onError: () => call.getFailure()?.message ?? "AI study guidance is unavailable. Please try again later.",
         onFinish: async ({ responseMessage, isAborted }) => {
           if (isAborted) return;
           const stored = await client

@@ -14,11 +14,19 @@ export function createResponsesCall(
   instructions?: string,
 ) {
   const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
+  let failure: { status: number; message: string } | undefined;
   const provider = createOpenAI({
     baseURL: `${config.baseURL.replace(/\/+$/, "").replace(/\/v1$/, "")}/v1`,
     apiKey: config.apiKey,
     headers: { "Lovable-API-Key": config.apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: runIdFetch.fetch,
+    fetch: async (input, init) => {
+      const response = await runIdFetch.fetch(input, init);
+      if (!response.ok) {
+        const payload = await response.clone().json().catch(() => ({})) as { message?: string; error?: { message?: string } };
+        failure = { status: response.status, message: payload.message ?? payload.error?.message ?? 'AI study guidance is unavailable.' };
+      }
+      return response;
+    },
   });
   const reasoning = config.model !== "openai/chat-latest";
   const result = streamText({
@@ -45,6 +53,7 @@ export function createResponsesCall(
   return {
     result,
     gateway: runIdFetch,
+    getFailure: () => failure,
     response: () =>
       withLovableAiGatewayRunIdHeader(
         result.toUIMessageStreamResponse({ sendReasoning: true }),
