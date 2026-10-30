@@ -4,14 +4,14 @@ import { Bookmark, BookOpen, BarChart3, ClipboardCheck, Download, GraduationCap,
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { LiberiaFlag } from '@/components/site/SiteChrome';
-export function StudentSidebar({ active = 'practice' }: { active?: string }) {
+export function StudentSidebar({ active = 'practice', verificationLabel }: { active?: string; verificationLabel?: string }) {
  const [name, setName] = useState('Guest'); const [signedIn, setSignedIn] = useState(false); const navigate = useNavigate();
  useEffect(() => { let live = true; void supabase.auth.getUser().then(async ({data}) => {
   if (!data.user || !live) return; setSignedIn(true);
   const profile = await supabase.from('profiles').select('full_name').eq('id',data.user.id).maybeSingle();
   if(live) setName(profile.data?.full_name || data.user.user_metadata['full_name'] || 'Student');
  }); return () => {live=false;}; }, []);
- return <aside className="bl-pt-side" aria-label="Student menu"><div className="bl-pt-user"><span className="bl-pt-avatar"><User size={22}/></span><div><strong>{name}</strong><span>Student</span></div></div><nav>
+ return <aside className="bl-pt-side" aria-label="Student menu"><div className="bl-pt-user"><span className="bl-pt-avatar"><User size={22}/></span><div><strong>{name}</strong><span>Student</span></div></div>{verificationLabel&&<p className="bl-student-verification" role="status">{verificationLabel}</p>}<nav>
  {([
   {key:'dashboard',to:'/dashboard',label:'Dashboard',Icon:House},
   {key:'my-courses',to:'/my-courses',label:'My Courses',Icon:BookOpen},
