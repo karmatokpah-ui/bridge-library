@@ -5,7 +5,7 @@ import {
   createLovableAiGatewayRunIdFetch,
   getLovableAiGatewayRunId,
   withLovableAiGatewayRunIdHeader,
-} from "../../ai-apps-gateway-sdk/examples/run-id.ts";
+} from "./run-id.server.ts";
 
 export function createResponsesCall(
   request: Request,
@@ -23,6 +23,7 @@ export function createResponsesCall(
   const reasoning = config.model !== "openai/chat-latest";
   const result = streamText({
     model: provider.responses(config.model),
+    maxRetries: 0,
     // AI SDK 6 lacks `instructions`: rename this key to `system` there.
     ...(instructions ? { instructions } : {}),
     messages,
