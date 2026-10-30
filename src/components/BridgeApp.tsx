@@ -57,6 +57,9 @@ import joinImg from '@/assets/hero-student.jpg';
 import shieldImg from '@/assets/bridgelib-shield.png';
 import { FeaturedCourses } from '@/components/learning/FeaturedCourses';
 import { useServerFn } from '@tanstack/react-start';
+import { studentRegistrationSchema, validateStudentPhoto } from "@/lib/student-registration";
+import { publishedPracticeQuestions } from "@/lib/practice-content";
+import { Button } from "@/components/ui/button";
 import { practiceFeedback } from '@/lib/reference.functions';
 
 type AuthMode = "signup" | "login";
@@ -106,7 +109,6 @@ type PracticeQuestion = {
   options: PracticeOption[];
   explanation: string | null;
   exam_type: string | null;
-  correct_option?: string;
 };
 
 type ReviewItem = {
@@ -162,289 +164,6 @@ const pretty = (value?: string | null) =>
 
 const getErrorMessage = (error: unknown, fallback: string) =>
   error instanceof Error ? error.message : fallback;
-
-/*
- * These are original demonstration questions.
- * They are used only when the database has no published questions
- * for the selected subject. They are not WASSCE past-paper questions.
- */
-const demoQuestionsForSubject = (subjectName: string): PracticeQuestion[] => {
-  const name = subjectName.toLowerCase();
-
-  const make = (
-    id: string,
-    prompt: string,
-    options: PracticeOption[],
-    correct_option: string,
-    explanation: string,
-  ): PracticeQuestion => ({
-    id,
-    prompt,
-    options,
-    correct_option,
-    explanation,
-    exam_type: "BridgeLIB demo practice",
-  });
-
-  if (name.includes("mathematics") || name.includes("math")) {
-    return [
-      make(
-        "demo-math-1",
-        "Solve 3x + 5 = 20.",
-        [
-          { id: "A", text: "x = 3" },
-          { id: "B", text: "x = 5" },
-          { id: "C", text: "x = 8" },
-          { id: "D", text: "x = 15" },
-        ],
-        "B",
-        "Subtract 5 from both sides to get 3x = 15. Divide by 3, so x = 5.",
-      ),
-      make(
-        "demo-math-2",
-        "A rectangle is 8 cm long and 3 cm wide. What is its area?",
-        [
-          { id: "A", text: "11 cm²" },
-          { id: "B", text: "16 cm²" },
-          { id: "C", text: "24 cm²" },
-          { id: "D", text: "48 cm²" },
-        ],
-        "C",
-        "Area = length × width = 8 × 3 = 24 cm².",
-      ),
-    ];
-  }
-
-  if (name.includes("english") || name.includes("literature")) {
-    return [
-      make(
-        "demo-english-1",
-        "Choose the word closest in meaning to “rapid”.",
-        [
-          { id: "A", text: "Slow" },
-          { id: "B", text: "Quick" },
-          { id: "C", text: "Quiet" },
-          { id: "D", text: "Weak" },
-        ],
-        "B",
-        "Rapid means happening or moving quickly.",
-      ),
-      make(
-        "demo-english-2",
-        "Which sentence is grammatically correct?",
-        [
-          { id: "A", text: "She go to school every day." },
-          { id: "B", text: "She going to school every day." },
-          { id: "C", text: "She goes to school every day." },
-          { id: "D", text: "She gone to school every day." },
-        ],
-        "C",
-        "The singular subject “She” takes “goes” in the simple present tense.",
-      ),
-    ];
-  }
-
-  if (name.includes("biology")) {
-    return [
-      make(
-        "demo-biology-1",
-        "Which cell structure controls most activities of a plant cell?",
-        [
-          { id: "A", text: "Cell wall" },
-          { id: "B", text: "Nucleus" },
-          { id: "C", text: "Vacuole" },
-          { id: "D", text: "Chloroplast" },
-        ],
-        "B",
-        "The nucleus contains genetic material and helps control cell activities.",
-      ),
-      make(
-        "demo-biology-2",
-        "Which process do green plants use to make glucose using light energy?",
-        [
-          { id: "A", text: "Respiration" },
-          { id: "B", text: "Transpiration" },
-          { id: "C", text: "Photosynthesis" },
-          { id: "D", text: "Germination" },
-        ],
-        "C",
-        "Photosynthesis uses light energy, carbon dioxide, and water to produce glucose and oxygen.",
-      ),
-    ];
-  }
-
-  if (name.includes("chemistry")) {
-    return [
-      make(
-        "demo-chemistry-1",
-        "What is the chemical symbol for sodium?",
-        [
-          { id: "A", text: "S" },
-          { id: "B", text: "So" },
-          { id: "C", text: "Na" },
-          { id: "D", text: "N" },
-        ],
-        "C",
-        "Sodium’s chemical symbol is Na, from its Latin name natrium.",
-      ),
-      make(
-        "demo-chemistry-2",
-        "A solution with pH 2 is best described as:",
-        [
-          { id: "A", text: "Strongly acidic" },
-          { id: "B", text: "Neutral" },
-          { id: "C", text: "Weakly alkaline" },
-          { id: "D", text: "Strongly alkaline" },
-        ],
-        "A",
-        "A pH below 7 is acidic; pH 2 indicates a strongly acidic solution.",
-      ),
-    ];
-  }
-
-  if (name.includes("physics")) {
-    return [
-      make(
-        "demo-physics-1",
-        "A force of 12 N acts on a mass of 3 kg. What is the acceleration?",
-        [
-          { id: "A", text: "0.25 m/s²" },
-          { id: "B", text: "4 m/s²" },
-          { id: "C", text: "9 m/s²" },
-          { id: "D", text: "36 m/s²" },
-        ],
-        "B",
-        "Newton’s second law gives F = ma, so a = F/m = 12/3 = 4 m/s².",
-      ),
-      make(
-        "demo-physics-2",
-        "Which instrument is used to measure electric current?",
-        [
-          { id: "A", text: "Voltmeter" },
-          { id: "B", text: "Thermometer" },
-          { id: "C", text: "Ammeter" },
-          { id: "D", text: "Barometer" },
-        ],
-        "C",
-        "An ammeter measures electric current.",
-      ),
-    ];
-  }
-
-  if (name.includes("economics")) {
-    return [
-      make(
-        "demo-economics-1",
-        "What is the opportunity cost of a decision?",
-        [
-          { id: "A", text: "The total money owned" },
-          { id: "B", text: "The next best alternative forgone" },
-          { id: "C", text: "The market price only" },
-          { id: "D", text: "The cost of all alternatives combined" },
-        ],
-        "B",
-        "Opportunity cost is the value of the next best alternative given up.",
-      ),
-      make(
-        "demo-economics-2",
-        "If demand increases while supply stays the same, what usually happens to equilibrium price?",
-        [
-          { id: "A", text: "It rises" },
-          { id: "B", text: "It falls" },
-          { id: "C", text: "It always becomes zero" },
-          { id: "D", text: "It cannot change" },
-        ],
-        "A",
-        "With supply unchanged, increased demand usually raises the equilibrium price.",
-      ),
-    ];
-  }
-
-  if (name.includes("geography")) {
-    return [
-      make(
-        "demo-geography-1",
-        "Which instrument is used to measure rainfall?",
-        [
-          { id: "A", text: "Barometer" },
-          { id: "B", text: "Rain gauge" },
-          { id: "C", text: "Wind vane" },
-          { id: "D", text: "Thermometer" },
-        ],
-        "B",
-        "A rain gauge collects and measures rainfall.",
-      ),
-      make(
-        "demo-geography-2",
-        "What is the name of the line at 0 degrees latitude?",
-        [
-          { id: "A", text: "Prime Meridian" },
-          { id: "B", text: "Tropic of Cancer" },
-          { id: "C", text: "Equator" },
-          { id: "D", text: "Arctic Circle" },
-        ],
-        "C",
-        "The Equator is the line of 0 degrees latitude.",
-      ),
-    ];
-  }
-
-  if (name.includes("history")) {
-    return [
-      make(
-        "demo-history-1",
-        "Why are oral traditions useful to historians?",
-        [
-          { id: "A", text: "They preserve accounts passed down by people" },
-          { id: "B", text: "They are always exact and never change" },
-          { id: "C", text: "They replace every written source" },
-          { id: "D", text: "They only describe weather" },
-        ],
-        "A",
-        "Oral traditions preserve community memories and accounts, which historians compare with other evidence.",
-      ),
-      make(
-        "demo-history-2",
-        "Which source is a primary historical source?",
-        [
-          { id: "A", text: "A modern textbook summary" },
-          { id: "B", text: "A diary written during the event" },
-          { id: "C", text: "A recent review article" },
-          { id: "D", text: "A fictional story set in the past" },
-        ],
-        "B",
-        "A diary written during the event is a first-hand source.",
-      ),
-    ];
-  }
-
-  return [
-    make(
-      "demo-general-1",
-      "Which habit best supports effective learning?",
-      [
-        { id: "A", text: "Reviewing regularly and practising questions" },
-        { id: "B", text: "Waiting until the last day to study" },
-        { id: "C", text: "Ignoring feedback" },
-        { id: "D", text: "Skipping difficult topics" },
-      ],
-      "A",
-      "Regular review and practice help learners remember and apply what they learn.",
-    ),
-    make(
-      "demo-general-2",
-      "What should you do when an explanation is unclear?",
-      [
-        { id: "A", text: "Give up immediately" },
-        { id: "B", text: "Copy without understanding" },
-        { id: "C", text: "Ask for clarification and try another example" },
-        { id: "D", text: "Avoid the topic forever" },
-      ],
-      "C",
-      "Asking for clarification and working through another example helps build understanding.",
-    ),
-  ];
-};
 
 const subjectImages: Record<string, string> = {
   mathematics:
@@ -839,6 +558,11 @@ export function BridgeHome() {
         const yearText = String(form.get("examYear") ?? "").trim();
         const targetExamYear = yearText ? Number(yearText) : null;
 
+        const registration = studentRegistrationSchema.safeParse({fullName,email,password,phone:String(form.get('phone')??''),school:String(form.get('schoolName')??''),learnerPath,educationLevel,gradeLevel:gradeLevel??'',targetExamYear});
+        if (!registration.success) throw new Error(registration.error.issues[0]?.message ?? 'Check your account details.');
+        const photo=form.get('studentPhoto');
+        if (!(photo instanceof File) || photo.size===0) throw new Error('Choose your student photo.');
+        validateStudentPhoto(photo);
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
@@ -846,6 +570,8 @@ export function BridgeHome() {
             emailRedirectTo: new URL(oauthReturnPath(new URLSearchParams(window.location.search).get("next")), window.location.origin).href,
             data: {
               full_name: fullName,
+              phone_number: registration.data.phone,
+              school_name: registration.data.school,
               learner_path: learnerPath,
               education_level: educationLevel,
               grade_level: gradeLevel,
@@ -865,21 +591,27 @@ export function BridgeHome() {
               education_level: educationLevel,
               grade_level: gradeLevel,
               target_exam_year: targetExamYear,
+              school_name: registration.data.school,
               onboarding_completed: true,
               updated_at: new Date().toISOString(),
             })
             .eq("id", data.user.id);
 
-          if (updateError) throw updateError;
+          if (updateError) throw new Error('Your account was created, but your learner profile could not be saved. Sign in and try again from your profile.');
+          const photoPath=`${data.user.id}/profile.${photo.type==='image/png'?'png':photo.type==='image/webp'?'webp':'jpg'}`;
+          const uploaded=await supabase.storage.from('student-photos').upload(photoPath,photo,{upsert:true});
+          if(!uploaded.error) await supabase.auth.updateUser({data:{student_photo_path:photoPath}});
+          else setToast({kind:'error',message:'Account created. Photo storage is not connected yet; your photo was not saved.'});
 
           setAuthMessage({
             message: "Your account is ready. Opening your BridgeLIB space…",
             kind: "success",
           });
           setUser(data.user);
+          await navigate({to:"/dashboard"});
         } else {
           setAuthMessage({
-            message: "Account created. Check your email for a confirmation link, then sign in.",
+            message: "Account created. Check your email for a confirmation link, then sign in. Upload your photo from Profile after confirming your email; it has not been saved yet.",
             kind: "success",
           });
         }
@@ -895,6 +627,7 @@ export function BridgeHome() {
         setAuthOpen(false);
         const next = oauthReturnPath(new URLSearchParams(window.location.search).get("next"));
         if (next !== "/") { window.location.assign(next); return; }
+        await navigate({to:"/dashboard"});
       }
     } catch (error) {
       setAuthMessage({
@@ -1675,6 +1408,9 @@ export function BridgeHome() {
                       />
                     </label>
 
+                    <label className="form-field">Phone number<input name="phone" type="tel" autoComplete="tel" placeholder="+231 …" required /></label>
+                    <label className="form-field">School you attend<input name="schoolName" autoComplete="organization" placeholder="Your school name" required /></label>
+                    <label className="form-field">Student photo<input name="studentPhoto" type="file" accept="image/jpeg,image/png,image/webp" required /><small>JPG, PNG or WebP, up to 5 MB. Upload again from Profile after email confirmation.</small></label>
                     <label className="form-field">
                       Learning path
                       <select
@@ -1779,7 +1515,7 @@ export function BridgeHome() {
                   </>
                 )}
 
-                <button className="bridge-button primary button-full" type="submit" disabled={busy}>
+                <Button className="bridge-button primary button-full" type="submit" disabled={busy}>
                   {busy
                     ? recoveryMode
                       ? "Updating password…"
@@ -1796,7 +1532,7 @@ export function BridgeHome() {
                           ? "Create account"
                           : "Sign in"}
                   <ArrowRight size={16} />
-                </button>
+                </Button>
 
                 {mode === "login" && !resetMode && !recoveryMode && (
                   <button
@@ -1889,7 +1625,6 @@ export function PracticePage() {
   const [secondsLeft, setSecondsLeft] = useState(30 * 60);
   const [loading, setLoading] = useState(true);
   const [examStarted, setExamStarted] = useState(false);
-  const [isDemoExam, setIsDemoExam] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [authRequired, setAuthRequired] = useState(false);
@@ -1945,13 +1680,16 @@ export function PracticePage() {
     setErrorMessage("");
     setAuthRequired(false);
     feedbackVersion.current += 1;
+    setQuestions([]);
+    setExamStarted(false);
     setAnswers({});
     setReview([]);
     setResult(null);
-    setIsDemoExam(false);
     submittingRef.current = false;
 
     try {
+      const who = await supabase.auth.getUser();
+      if (!who.data.user) { setAuthRequired(true); throw new Error("Please sign in to start a practice test."); }
       const { data, error } = await supabase
         .from("exam_questions")
         .select("id,prompt,options,explanation,exam_type")
@@ -1961,30 +1699,9 @@ export function PracticePage() {
 
       if (error) throw error;
 
-      const valid = ((data ?? []) as PracticeQuestion[]).filter(
-        (question) =>
-          question.id &&
-          question.prompt &&
-          Array.isArray(question.options) &&
-          question.options.length > 0 &&
-          question.options.every(
-            (option) => typeof option.id === "string" && typeof option.text === "string",
-          ),
-      );
-
-      if (valid.length > 0) {
-        setQuestions(valid);
-        setIsDemoExam(false);
-      } else {
-        const chosenSubject = subjects.find((subject) => String(subject.id) === subjectId);
-
-        if (!chosenSubject) {
-          throw new Error("Please choose a valid subject and try again.");
-        }
-
-        setQuestions(demoQuestionsForSubject(chosenSubject.name));
-        setIsDemoExam(true);
-      }
+      const valid = publishedPracticeQuestions(data ?? []);
+      if (!valid.length) throw new Error("No published exam questions are available for this subject yet. No sample test has been substituted.");
+      setQuestions(valid);
 
       setSecondsLeft(30 * 60);
       setExamStarted(true);
@@ -2024,30 +1741,6 @@ export function PracticePage() {
     setErrorMessage("");
 
     try {
-      if (isDemoExam) {
-        const reviewItems: ReviewItem[] = questions.map((question) => ({
-          question_id: question.id,
-          prompt: question.prompt,
-          is_correct: answers[question.id] === question.correct_option,
-          correct_option:
-            question.options.find((option) => option.id === question.correct_option)?.text ??
-            question.correct_option ??
-            "",
-          explanation: question.explanation,
-        }));
-
-        const demoResult: ExamResult = {
-          score: reviewItems.filter((item) => item.is_correct).length,
-          total_questions: questions.length,
-          review: reviewItems,
-        };
-
-        setResult(demoResult);
-        setReview(reviewItems);
-        setExamStarted(false);
-        return;
-      }
-
       const { data: authData, error: authError } = await supabase.auth.getUser();
 
       if (authError) throw authError;
@@ -2104,10 +1797,7 @@ export function PracticePage() {
     const question = questions.find(q => q.id === qid);
     if (!question) return;
     try {
-      const item = isDemoExam ? {
-        question_id: qid, is_correct: oid === question.correct_option,
-        correct_option: question.correct_option ?? '', explanation: question.explanation,
-      } : await feedback({ data: { question_id: qid, selected_option: oid } });
+      const item = await feedback({ data: { question_id: qid, selected_option: oid } });
       if (version !== feedbackVersion.current) return;
       setReview(prev => [...prev.filter(r => r.question_id !== qid), { ...item, prompt: question.prompt }]);
     } catch { setErrorMessage('Immediate feedback is waiting for the original data connection. You can still submit your test for marking.'); }
@@ -2118,7 +1808,6 @@ export function PracticePage() {
     setResult(null);
     setReview([]);
     setQuestions([]);
-    setIsDemoExam(false);
     setAnswers({});
     setExamStarted(false);
     setSecondsLeft(30 * 60);
@@ -2142,7 +1831,6 @@ export function PracticePage() {
         secondsLeft={secondsLeft}
         loading={loading}
         examStarted={examStarted}
-        isDemoExam={isDemoExam}
         submitting={submitting}
         errorMessage={errorMessage}
         authRequired={authRequired}

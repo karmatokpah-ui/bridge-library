@@ -1,0 +1,4 @@
+import {createFileRoute} from '@tanstack/react-router';
+import {PracticeMaterials} from '@/components/practice/PracticeMaterials';
+export const Route=createFileRoute('/practice_/study-notes')({validateSearch:(s:Record<string,unknown>):{subject?:string}=>typeof s['subject']==='string'?{subject:s['subject']}:{},head:()=>({meta:[{title:'Study Notes — BridgeLIB Liberia'},{name:'description',content:'Read published course notes and original revision materials for Liberian learners.'},{property:'og:title',content:'Study Notes — BridgeLIB Liberia'},{property:'og:description',content:'Course notes and clearly labeled original Liberian revision materials.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),component:Notes});
+function Notes(){const {subject}=Route.useSearch();return <PracticeMaterials kind="notes" {...(subject?{subject}:{})}/>;}

@@ -1961,3 +1961,16 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-study-step-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 20px; }
 .bl-study-step-completed { display: inline-flex; align-items: center; gap: 8px; color: var(--bl-green); }
 @media(max-width:700px) { .bl-study-heading > .bl-btn { margin-left: 0; }.bl-study-step-heading .bl-btn { max-width: 100%; }.bl-study-step-controls .bl-btn { width: 100%; }.bl-study-step-nav { margin-bottom: 16px; } }
+
+.bl-material-filters { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
+.bl-material-filters input { flex: 1; min-width: 180px; }
+.bl-material-filters select { padding: 10px; border: 1px solid var(--bl-border); border-radius: 6px; background: var(--bl-surface); color: var(--bl-text); max-width: 100%; }
+.bl-material-exercise { margin-top: 18px; line-height: 1.7; }
+.bl-material-exercise summary, .bl-study-step-item summary { cursor: pointer; color: var(--bl-blue); margin: 10px 0; }
+.bl-student-photo { width: 96px; height: 96px; object-fit: cover; border-radius: 6px; }
+.auth-card .auth-tabs { display: flex; gap: 12px; margin: 16px 0; }
+.auth-card .auth-tab { padding: 10px 14px; border-bottom: 2px solid transparent; color: var(--bl-muted); }
+.auth-card .auth-tab.active { color: var(--bl-blue); border-color: var(--bl-blue); }
+.auth-card .form-field { display: grid; gap: 7px; margin-bottom: 16px; }
+.auth-card .form-field small { display: block; color: var(--bl-muted); line-height: 1.6; font-size: .75rem; }
+.bl-study-step-course > h2 { font-size: 1.15rem; font-weight: 700; color: var(--bl-navy); margin-bottom: 12px; }
