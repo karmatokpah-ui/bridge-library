@@ -12,15 +12,21 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as BookmarksRouteImport } from './routes/bookmarks'
+import { Route as CertificatesRouteImport } from './routes/certificates'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CoursesRouteImport } from './routes/courses'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DownloadsRouteImport } from './routes/downloads'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as FeaturesRouteImport } from './routes/features'
 import { Route as ManagementRouteImport } from './routes/management'
 import { Route as McpRouteImport } from './routes/mcp'
+import { Route as MyCoursesRouteImport } from './routes/my-courses'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SiteContentRouteImport } from './routes/site-content'
 import { Route as TeacherRouteImport } from './routes/teacher'
@@ -45,6 +51,16 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookmarksRoute = BookmarksRouteImport.update({
+  id: '/bookmarks',
+  path: '/bookmarks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificatesRoute = CertificatesRouteImport.update({
+  id: '/certificates',
+  path: '/certificates',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -58,6 +74,11 @@ const CoursesRoute = CoursesRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadsRoute = DownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -80,6 +101,11 @@ const McpRoute = McpRouteImport.update({
   path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MyCoursesRoute = MyCoursesRouteImport.update({
+  id: '/my-courses',
+  path: '/my-courses',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PracticeRoute = PracticeRouteImport.update({
   id: '/practice',
   path: '/practice',
@@ -88,6 +114,16 @@ const PracticeRoute = PracticeRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -136,15 +172,21 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
+  '/bookmarks': typeof BookmarksRoute
+  '/certificates': typeof CertificatesRoute
   '/contact': typeof ContactRoute
   '/courses': typeof CoursesRoute
   '/dashboard': typeof DashboardRoute
+  '/downloads': typeof DownloadsRoute
   '/faq': typeof FaqRoute
   '/features': typeof FeaturesRoute
   '/management': typeof ManagementRoute
   '/mcp': typeof McpRoute
+  '/my-courses': typeof MyCoursesRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/settings': typeof SettingsRoute
   '/site-content': typeof SiteContentRoute
   '/teacher': typeof TeacherRoute
@@ -158,15 +200,21 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
+  '/bookmarks': typeof BookmarksRoute
+  '/certificates': typeof CertificatesRoute
   '/contact': typeof ContactRoute
   '/courses': typeof CoursesRoute
   '/dashboard': typeof DashboardRoute
+  '/downloads': typeof DownloadsRoute
   '/faq': typeof FaqRoute
   '/features': typeof FeaturesRoute
   '/management': typeof ManagementRoute
   '/mcp': typeof McpRoute
+  '/my-courses': typeof MyCoursesRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/settings': typeof SettingsRoute
   '/site-content': typeof SiteContentRoute
   '/teacher': typeof TeacherRoute
@@ -181,15 +229,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
+  '/bookmarks': typeof BookmarksRoute
+  '/certificates': typeof CertificatesRoute
   '/contact': typeof ContactRoute
   '/courses': typeof CoursesRoute
   '/dashboard': typeof DashboardRoute
+  '/downloads': typeof DownloadsRoute
   '/faq': typeof FaqRoute
   '/features': typeof FeaturesRoute
   '/management': typeof ManagementRoute
   '/mcp': typeof McpRoute
+  '/my-courses': typeof MyCoursesRoute
   '/practice': typeof PracticeRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
+  '/progress': typeof ProgressRoute
   '/settings': typeof SettingsRoute
   '/site-content': typeof SiteContentRoute
   '/teacher': typeof TeacherRoute
@@ -205,15 +259,21 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/bookmarks'
+    | '/certificates'
     | '/contact'
     | '/courses'
     | '/dashboard'
+    | '/downloads'
     | '/faq'
     | '/features'
     | '/management'
     | '/mcp'
+    | '/my-courses'
     | '/practice'
     | '/privacy'
+    | '/profile'
+    | '/progress'
     | '/settings'
     | '/site-content'
     | '/teacher'
@@ -227,15 +287,21 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/bookmarks'
+    | '/certificates'
     | '/contact'
     | '/courses'
     | '/dashboard'
+    | '/downloads'
     | '/faq'
     | '/features'
     | '/management'
     | '/mcp'
+    | '/my-courses'
     | '/practice'
     | '/privacy'
+    | '/profile'
+    | '/progress'
     | '/settings'
     | '/site-content'
     | '/teacher'
@@ -249,15 +315,21 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/bookmarks'
+    | '/certificates'
     | '/contact'
     | '/courses'
     | '/dashboard'
+    | '/downloads'
     | '/faq'
     | '/features'
     | '/management'
     | '/mcp'
+    | '/my-courses'
     | '/practice'
     | '/privacy'
+    | '/profile'
+    | '/progress'
     | '/settings'
     | '/site-content'
     | '/teacher'
@@ -272,15 +344,21 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
+  BookmarksRoute: typeof BookmarksRoute
+  CertificatesRoute: typeof CertificatesRoute
   ContactRoute: typeof ContactRoute
   CoursesRoute: typeof CoursesRoute
   DashboardRoute: typeof DashboardRoute
+  DownloadsRoute: typeof DownloadsRoute
   FaqRoute: typeof FaqRoute
   FeaturesRoute: typeof FeaturesRoute
   ManagementRoute: typeof ManagementRoute
   McpRoute: typeof McpRoute
+  MyCoursesRoute: typeof MyCoursesRoute
   PracticeRoute: typeof PracticeRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProfileRoute: typeof ProfileRoute
+  ProgressRoute: typeof ProgressRoute
   SettingsRoute: typeof SettingsRoute
   SiteContentRoute: typeof SiteContentRoute
   TeacherRoute: typeof TeacherRoute
@@ -314,6 +392,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bookmarks': {
+      id: '/bookmarks'
+      path: '/bookmarks'
+      fullPath: '/bookmarks'
+      preLoaderRoute: typeof BookmarksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificates': {
+      id: '/certificates'
+      path: '/certificates'
+      fullPath: '/certificates'
+      preLoaderRoute: typeof CertificatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -333,6 +425,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/downloads': {
+      id: '/downloads'
+      path: '/downloads'
+      fullPath: '/downloads'
+      preLoaderRoute: typeof DownloadsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -363,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/my-courses': {
+      id: '/my-courses'
+      path: '/my-courses'
+      fullPath: '/my-courses'
+      preLoaderRoute: typeof MyCoursesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/practice': {
       id: '/practice'
       path: '/practice'
@@ -375,6 +481,20 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -440,15 +560,21 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
+  BookmarksRoute: BookmarksRoute,
+  CertificatesRoute: CertificatesRoute,
   ContactRoute: ContactRoute,
   CoursesRoute: CoursesRoute,
   DashboardRoute: DashboardRoute,
+  DownloadsRoute: DownloadsRoute,
   FaqRoute: FaqRoute,
   FeaturesRoute: FeaturesRoute,
   ManagementRoute: ManagementRoute,
   McpRoute: McpRoute,
+  MyCoursesRoute: MyCoursesRoute,
   PracticeRoute: PracticeRoute,
   PrivacyRoute: PrivacyRoute,
+  ProfileRoute: ProfileRoute,
+  ProgressRoute: ProgressRoute,
   SettingsRoute: SettingsRoute,
   SiteContentRoute: SiteContentRoute,
   TeacherRoute: TeacherRoute,
