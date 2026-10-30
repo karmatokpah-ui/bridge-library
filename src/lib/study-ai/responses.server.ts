@@ -22,8 +22,14 @@ export function createResponsesCall(
     fetch: async (input, init) => {
       const response = await runIdFetch.fetch(input, init);
       if (!response.ok) {
-        const payload = await response.clone().json().catch(() => ({})) as { message?: string; error?: { message?: string } };
-        failure = { status: response.status, message: payload.message ?? payload.error?.message ?? 'AI study guidance is unavailable.' };
+        const payload = (await response
+          .clone()
+          .json()
+          .catch(() => ({}))) as { message?: string; error?: { message?: string } };
+        failure = {
+          status: response.status,
+          message: payload.message ?? payload.error?.message ?? "AI study guidance is unavailable.",
+        };
       }
       return response;
     },

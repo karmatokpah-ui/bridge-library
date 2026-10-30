@@ -110,23 +110,22 @@ export async function handleStudyChat(request: Request) {
     );
     // Preserve provider access denials before sending any browser stream headers.
     await call.gateway.waitForRunId();
-    const failure=call.getFailure();
-    if(failure)return reply(failure.message,failure.status);
+    const failure = call.getFailure();
+    if (failure) return reply(failure.message, failure.status);
     return await withLovableAiGatewayRunIdHeader(
       call.result.toUIMessageStreamResponse({
         originalMessages: messages as UIMessage[],
         sendReasoning: true,
-        onError: () => call.getFailure()?.message ?? "AI study guidance is unavailable. Please try again later.",
+        onError: () =>
+          call.getFailure()?.message ?? "AI study guidance is unavailable. Please try again later.",
         onFinish: async ({ responseMessage, isAborted }) => {
           if (isAborted) return;
-          const stored = await client
-            .from("bridge_study_messages")
-            .insert({
-              thread_id: threadId,
-              user_id: userId,
-              message_id: responseMessage.id,
-              message: responseMessage,
-            });
+          const stored = await client.from("bridge_study_messages").insert({
+            thread_id: threadId,
+            user_id: userId,
+            message_id: responseMessage.id,
+            message: responseMessage,
+          });
           if (stored.error) throw new Error("The answer could not be saved to your account.");
         },
       }),
