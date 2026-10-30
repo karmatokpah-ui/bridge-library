@@ -8,6 +8,7 @@ import { EmptyState, SubjectIcon } from '@/components/site/SiteChrome';
 import { Button } from '@/components/ui/button';
 import { studySteps } from '@/lib/study-steps.functions';
 import { courseData, learningAction } from '@/lib/learning.functions';
+import {CurriculumSource} from './CurriculumSource';
 
 function StudyError({error,retry}:{error:unknown;retry:()=>void}) {
   const text=error instanceof Error?error.message:'Study records unavailable.';
@@ -28,6 +29,7 @@ export function StudyStepsPage() {
       {!c.nextLessons.length&&<p className="bl-muted">{c.total?'All published lessons completed. Practise this subject or revisit a lesson.':'Study steps will appear when lessons are published.'}</p>}
       <Link to="/practice" search={{subject:String(c.subject.id)}} className="bl-btn bl-btn-outline"><ClipboardCheck size={16}/>Practice {c.subject.name} <ArrowRight size={14}/></Link>
     </section>)}</div>}
+    <CurriculumSource/>
   </LearnerShell>;
 }
 
@@ -49,5 +51,6 @@ export function StudyLessonPage({subjectId,lessonId}:{subjectId:string;lessonId:
       <Link to="/study-guide/steps" className="bl-link">Back to study steps</Link></div>
       {!d?.enrolled&&<Link to="/courses/$subjectId" params={{subjectId}} className="bl-link">Enroll in this course to save lesson progress <ArrowRight size={14}/></Link>}
     </>}
+    <CurriculumSource/>
   </LearnerShell>;
 }

@@ -1,0 +1,2 @@
+import {ExternalLink} from 'lucide-react';
+export function CurriculumSource(){return <section className="bl-study-step-course"><h2>Liberian Ministry curriculum</h2><p className="bl-muted">Curriculum documents could not be verified from the supplied Ministry page. Your published BridgeLIB lessons remain separate; Ministry alignment has not been confirmed.</p><a className="bl-link" href="https://moe.gov.lr/curriculum-download/" target="_blank" rel="noopener noreferrer">Open Ministry curriculum page <ExternalLink size={14}/></a></section>;}

@@ -1,6 +1,8 @@
 # BridgeLIB completion
 
-- [ ] Add issued-record certificate PDF downloads and inspect the supplied Ministry curriculum links for Study Guide integration.
+- [x] Add issued-record completion certificate PDF downloads and Ministry curriculum source links, with explicit distinction from official exam credentials.
+- [ ] Verify live issued-certificate download: original certificate migration/connection and signed-in account remain unavailable.
+- [ ] Connect actual Ministry curriculum topics: supplied page could not be fetched and no direct documents were verified; needs accessible documents.
 - [x] Remove demo test fallback; tests accept published database questions only; original Liberian revision notes and exercises are separate and honestly labeled.
 - [x] Build Practice Study Notes and Past Questions pages reading published lessons/papers, with unavailable states and original revision materials; public navigation and answer review verified.
 - [x] Extend self-signup with validated phone, school and photo selection; hosted email signup enabled, email confirmation required.
