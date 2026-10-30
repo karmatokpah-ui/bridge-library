@@ -1,8 +1,10 @@
 # BridgeLIB completion
 
-- [ ] Remove demo test fallback; use published question bank only and add original Liberian revision materials with honest labels.
-- [ ] Build Practice Study Notes and Past Questions pages with real published records and explicit unavailable states.
-- [ ] Extend self-signup with phone, photo and school; verify hosted email signup settings and validate fields.
+- [x] Remove demo test fallback; tests accept published database questions only; original Liberian revision notes and exercises are separate and honestly labeled.
+- [x] Build Practice Study Notes and Past Questions pages reading published lessons/papers, with unavailable states and original revision materials; public navigation and answer review verified.
+- [x] Extend self-signup with validated phone, school and photo selection; hosted email signup enabled, email confirmation required.
+- [ ] Verify real signup, lessons, tests and study chat after confirmation: no real student test account/session available.
+- [ ] Activate private student photo storage on the original backend: connection recovery needed; uploads show explicit unsaved-photo errors until storage is available.
 - [ ] Connect official schedules and verified student badges: requires authoritative records; never fabricate them.
 - [x] Build actionable Study Guide next-step and lesson pages, connect recommendation links, and check dashboard navigation; signed-in lesson completion remains unverified with the account-testing blocker below.
 - [x] Connect dashboard certificate totals to exact owner-scoped issued records and show explicit missing exam-date and student-verification states; ten focused tests and signed-out phone/desktop checks passed.

@@ -1968,3 +1968,9 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 .bl-material-exercise { margin-top: 18px; line-height: 1.7; }
 .bl-material-exercise summary, .bl-study-step-item summary { cursor: pointer; color: var(--bl-blue); margin: 10px 0; }
 .bl-student-photo { width: 96px; height: 96px; object-fit: cover; border-radius: 6px; }
+.auth-card .auth-tabs { display: flex; gap: 12px; margin: 16px 0; }
+.auth-card .auth-tab { padding: 10px 14px; border-bottom: 2px solid transparent; color: var(--bl-muted); }
+.auth-card .auth-tab.active { color: var(--bl-blue); border-color: var(--bl-blue); }
+.auth-card .form-field { display: grid; gap: 7px; margin-bottom: 16px; }
+.auth-card .form-field small { display: block; color: var(--bl-muted); line-height: 1.6; font-size: .75rem; }
+.bl-study-step-course > h2 { font-size: 1.15rem; font-weight: 700; color: var(--bl-navy); margin-bottom: 12px; }
