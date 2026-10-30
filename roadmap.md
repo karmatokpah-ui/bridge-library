@@ -1,5 +1,6 @@
 # BridgeLIB completion
 
+- [ ] Build actionable Study Guide next-step and lesson pages, connect recommendation links, and check dashboard navigation.
 - [x] Connect dashboard certificate totals to exact owner-scoped issued records and show explicit missing exam-date and student-verification states; ten focused tests and signed-out phone/desktop checks passed.
 - [x] Build separate Study Guide conversation routes, account-history code, streaming AI Gateway recommendations and dashboard links; real Gateway sample recommendation passed.
 - [ ] Activate and verify account-saved AI conversations: original-backend connection must be restored and pending `supabase/manual/study-conversations.sql` validated/applied; a signed-in test account is also unavailable. No browser-only storage substituted.
