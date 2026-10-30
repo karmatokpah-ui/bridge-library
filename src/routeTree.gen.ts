@@ -33,6 +33,7 @@ import { Route as TeacherRouteImport } from './routes/teacher'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WassceRouteImport } from './routes/wassce'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ApiStudyChatRouteImport } from './routes/api/study-chat'
 import { Route as CoursesSubjectIdRouteImport } from './routes/courses_.$subjectId'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
@@ -157,6 +158,11 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiStudyChatRoute = ApiStudyChatRouteImport.update({
+  id: '/api/study-chat',
+  path: '/api/study-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesSubjectIdRoute = CoursesSubjectIdRouteImport.update({
   id: '/courses_/$subjectId',
   path: '/courses/$subjectId',
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/study-chat': typeof ApiStudyChatRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
@@ -221,6 +228,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/study-chat': typeof ApiStudyChatRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
@@ -250,6 +258,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/study-chat': typeof ApiStudyChatRoute
   '/courses_/$subjectId': typeof CoursesSubjectIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
@@ -280,6 +289,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
+    | '/api/study-chat'
     | '/courses/$subjectId'
     | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
@@ -308,6 +318,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
+    | '/api/study-chat'
     | '/courses/$subjectId'
     | '/.lovable/oauth/consent'
   id:
@@ -336,6 +347,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
+    | '/api/study-chat'
     | '/courses_/$subjectId'
     | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
@@ -365,6 +377,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   WassceRoute: typeof WassceRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiStudyChatRoute: typeof ApiStudyChatRoute
   CoursesSubjectIdRoute: typeof CoursesSubjectIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
@@ -539,6 +552,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/study-chat': {
+      id: '/api/study-chat'
+      path: '/api/study-chat'
+      fullPath: '/api/study-chat'
+      preLoaderRoute: typeof ApiStudyChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses_/$subjectId': {
       id: '/courses_/$subjectId'
       path: '/courses/$subjectId'
@@ -582,6 +602,7 @@ const rootRouteChildren: RootRouteChildren = {
   WassceRoute: WassceRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiStudyChatRoute: ApiStudyChatRoute,
   CoursesSubjectIdRoute: CoursesSubjectIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
