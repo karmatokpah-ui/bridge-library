@@ -1,3 +1,22 @@
-import {createFileRoute} from '@tanstack/react-router';
-import {StudyGuide} from '@/components/learning/StudyGuide';
-export const Route=createFileRoute('/study-guide')({head:()=>({meta:[{title:'Study Guide — BridgeLIB'},{name:'description',content:'Ask about your progress and plan personalized next study steps in account-saved conversations.'},{property:'og:title',content:'Study Guide — BridgeLIB'},{property:'og:description',content:'Your personalized BridgeLIB learning conversations.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),component:StudyGuide});
+import { createFileRoute } from "@tanstack/react-router";
+import { StudyGuide } from "@/components/learning/StudyGuide";
+export const Route = createFileRoute("/study-guide")({
+  head: () => ({
+    meta: [
+      { title: "Study Guide — BridgeLIB" },
+      {
+        name: "description",
+        content:
+          "Ask about your progress and plan personalized next study steps in account-saved conversations.",
+      },
+      { property: "og:title", content: "Study Guide — BridgeLIB" },
+      {
+        property: "og:description",
+        content: "Your personalized BridgeLIB learning conversations.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
+  component: StudyGuide,
+});
