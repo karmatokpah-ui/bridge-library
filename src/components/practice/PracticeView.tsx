@@ -10,7 +10,7 @@ import { StudentSidebar } from "@/components/learning/StudentSidebar";
 import { Button } from "@/components/ui/button";
 
 type Option = { id: string; text: string };
-type Question = { id: string; prompt: string; options: Option[]; explanation: string | null; exam_type: string | null; correct_option?: string };
+type Question = { id: string; prompt: string; options: Option[]; explanation: string | null; exam_type: string | null };
 type Review = { question_id: string; is_correct: boolean; correct_option: string; explanation: string | null };
 type Result = { score: number; total_questions: number };
 type Subject = { id: number | string; name: string };
@@ -27,7 +27,6 @@ export type PracticeViewProps = {
   secondsLeft: number;
   loading: boolean;
   examStarted: boolean;
-  isDemoExam: boolean;
   submitting: boolean;
   errorMessage: string;
   authRequired: boolean;
@@ -85,13 +84,13 @@ export function PracticeView(p: PracticeViewProps) {
           <div className="bl-pt-hero-text">
             <span className="bl-pt-chip"><GraduationCap size={16} />WASSCE Preparation</span>
             <h1>{subjectName === "Practice" ? "Practice Test" : `${subjectName} Practice Test`}</h1>
-            <p>Test your knowledge and build confidence for your WASSCE exams. Choose a subject, answer past-style questions and learn from explanations.</p>
+            <p>Choose a subject and practise published WASSCE and school exam questions.</p>
           </div>
           <img src={heroImg} alt="Student writing an exam" />
         </section>
         <div className="bl-pt-facts">
           <div><BookOpen size={20} /><span>Subject<strong>{subjectName === "Practice" ? "Choose below" : subjectName}</strong></span></div>
-          <div><FileText size={20} /><span>Exam Type<strong>{q?.exam_type ?? "WASSCE"}</strong></span></div>
+          <div><FileText size={20} /><span>Exam Type<strong>{q?.exam_type ?? "Choose a test"}</strong></span></div>
           <div><ListChecks size={20} /><span>Total Questions<strong>{total ? `${total} Questions` : "Up to 20"}</strong></span></div>
           <div><CalendarClock size={20} /><span>Time Limit<strong>30 Minutes</strong></span></div>
         </div>
@@ -99,7 +98,7 @@ export function PracticeView(p: PracticeViewProps) {
         {p.errorMessage && (
           <div role="alert" className="bl-pt-alert">
             {p.errorMessage}
-            {p.authRequired && <> <Link to="/" search={{ auth: "login" } as never}>Sign in</Link></>}
+            {p.authRequired && <> <Link to="/" search={{ auth: "login" }}>Sign in</Link> · <Link to="/" search={{auth:"signup"}}>Create account</Link></>}
           </div>
         )}
 
@@ -121,7 +120,6 @@ export function PracticeView(p: PracticeViewProps) {
         {inTest && q && (
           <div className="bl-pt-grid">
             <section className="bl-pt-card" id="pt-question">
-              {p.isDemoExam && <p className="bl-pt-note">Sample questions — this subject has no published questions yet. Results are not saved.</p>}
               <div className="bl-pt-qhead">
                 <div>
                   <strong>Question {current + 1} of {total}</strong>
@@ -223,9 +221,9 @@ export function PracticeView(p: PracticeViewProps) {
 
         <section className="bl-pt-features">
           {[
-            { icon: NotebookText, title: "Past Questions", text: "Access WASSCE-style questions with detailed answers and explanations.", cta: "Start Practicing", onClick: () => { if (inTest) reviewAnswers(); else document.getElementById("practice-subject")?.focus(); } },
+            { icon: NotebookText, title: "Past Questions", text: "Read published exam papers and review revision questions.", cta: "View Questions", to: "/practice/past-questions" as const },
             { icon: Timer, title: "Mock Tests", text: "Timed practice tests to improve your speed and accuracy.", cta: "Start Test", onClick: () => { if (inTest) reviewAnswers(); else if (p.subjectId) p.onStart(); else document.getElementById("practice-subject")?.focus(); } },
-            { icon: FileText, title: "Study Notes", text: "Notes and revision materials for all subjects.", cta: "View Notes", to: "/courses" as const },
+            { icon: FileText, title: "Study Notes", text: "Course notes and original Liberian revision materials.", cta: "View Notes", to: "/practice/study-notes" as const },
             { icon: LineChart, title: "Performance Tracking", text: "Monitor your progress, identify weak areas and improve.", cta: "View Progress", to: "/progress" as const },
           ].map((f) => (
             <article key={f.title} className="bl-pt-feature">
@@ -233,7 +231,7 @@ export function PracticeView(p: PracticeViewProps) {
               <h3>{f.title}</h3>
               <p>{f.text}</p>
               {"to" in f && f.to
-                ? <Link to={f.to}>{f.cta} <ArrowRight size={14} /></Link>
+                ? <Link to={f.to} search={f.to==='/progress'?{}:p.subjectId?{subject:p.subjectId}:{}}>{f.cta} <ArrowRight size={14} /></Link>
                 : <Button type="button" onClick={f.onClick}>{f.cta} <ArrowRight size={14} /></Button>}
             </article>
           ))}
