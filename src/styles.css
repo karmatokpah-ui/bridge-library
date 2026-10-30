@@ -1939,3 +1939,25 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 @media(max-width:1200px) { .bl-sd-layout { grid-template-columns: 195px minmax(0,1fr); }.bl-sd-columns { grid-template-columns: minmax(0,1fr) 235px; }.bl-sd-course { grid-template-columns: 55px minmax(0,1fr); padding: 10px; }.bl-sd-course > img { width: 55px; height: 66px; }.bl-sd-course-head { flex-wrap: wrap; }.bl-sd-stat { flex-direction: column; }.bl-sd-stat h2 { min-height: 0; margin-bottom: 4px; } }
 @media(max-width:960px) { .bl-sd-layout { grid-template-columns: minmax(0,1fr); padding: 8px 12px; }.bl-sd-layout > .bl-pt-side { display: flex; padding: 8px; }.bl-sd-layout .bl-pt-user, .bl-sd-layout .bl-pt-side-card { display: none; }.bl-sd-layout .bl-pt-side nav { flex-direction: row; overflow-x: auto; }.bl-sd-layout .bl-pt-side nav a, .bl-sd-layout .bl-pt-side nav button { white-space: nowrap; flex: none; }.bl-sd-layout .bl-pt-side hr { display: none; }.bl-sd-stat { flex-direction: row; }.bl-sd-welcome-copy { max-width: 65%; }.bl-sd-dream { display: none; } }
 @media(max-width:700px) { .bl-sd-columns { grid-template-columns: minmax(0,1fr); }.bl-sd-welcome { height: 210px; }.bl-sd-welcome-copy { max-width: 90%; left: 16px; }.bl-sd-welcome::after { background: var(--bl-hero-shade); }.bl-sd-welcome h1 { font-size: 1.25rem; }.bl-sd-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }.bl-sd-course-grid, .bl-sd-bottom { grid-template-columns: minmax(0,1fr); }.bl-sd-course { grid-template-columns: 76px minmax(0,1fr); min-height: 142px; }.bl-sd-course > img { width: 76px; height: 76px; }.bl-sd-course h3 { font-size: .85rem; }.bl-sd-course-meta { font-size: .7rem; }.bl-sd-facts { gap: 6px; }.bl-sd-facts > span { padding: 8px; gap: 5px; }.bl-sd-access { align-items: flex-start; flex-direction: column; }.bl-sd-site .bl-footer { margin: 8px 12px 12px; }.bl-sd-section-title > a { white-space: normal; text-align: right; }.bl-sd-quick strong { font-size: .8rem; }.bl-sd-quick small { font-size: .7rem; } }
+
+.bl-study-heading { flex-wrap: wrap; }
+.bl-study-heading > .bl-btn { margin-left: auto; }
+.bl-study-step-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; font-size: .8rem; color: var(--bl-muted); }
+.bl-study-step-nav a { color: var(--bl-blue); }
+.bl-study-step-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; }
+.bl-study-step-heading h1, .bl-study-step-heading h2, .bl-study-step-item h3 { overflow-wrap: anywhere; }
+.bl-study-step-heading h2 { font-size: 1.2rem; font-weight: 700; color: var(--bl-navy); }
+.bl-study-step-courses { display: grid; gap: 32px; }
+.bl-study-step-course { border-top: 1px solid var(--bl-border); padding-top: 24px; }
+.bl-study-step-subject { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.bl-study-step-list { display: grid; margin: 16px 0; }
+.bl-study-step-item { display: flex; gap: 14px; padding: 20px 0; border-bottom: 1px solid var(--bl-border); }
+.bl-study-step-item > div { min-width: 0; }
+.bl-study-step-item h3 { color: var(--bl-navy); font-weight: 700; font-size: 1rem; }
+.bl-study-step-item p { margin: 8px 0; }
+.bl-study-step-item .bl-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; }
+.bl-study-step-number { display: grid; place-items: center; width: 32px; height: 32px; flex: none; border-radius: 50%; color: var(--bl-blue); background: var(--bl-soft); font-weight: 700; }
+.bl-study-lesson-content { margin: 28px 0; padding: 24px 0; border-block: 1px solid var(--bl-border); color: var(--bl-text); line-height: 1.85; overflow-wrap: anywhere; }
+.bl-study-step-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 20px; }
+.bl-study-step-completed { display: inline-flex; align-items: center; gap: 8px; color: var(--bl-green); }
+@media(max-width:700px) { .bl-study-heading > .bl-btn { margin-left: 0; }.bl-study-step-heading .bl-btn { max-width: 100%; }.bl-study-step-controls .bl-btn { width: 100%; }.bl-study-step-nav { margin-bottom: 16px; } }

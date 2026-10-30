@@ -37,7 +37,9 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as ApiStudyChatRouteImport } from './routes/api/study-chat'
 import { Route as CoursesSubjectIdRouteImport } from './routes/courses_.$subjectId'
 import { Route as StudyGuideThreadIdRouteImport } from './routes/study-guide_.$threadId'
+import { Route as StudyGuideStepsRouteImport } from './routes/study-guide_.steps'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as StudyGuideLessonsSubjectIdLessonIdRouteImport } from './routes/study-guide_.lessons.$subjectId.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -180,11 +182,22 @@ const StudyGuideThreadIdRoute = StudyGuideThreadIdRouteImport.update({
   path: '/study-guide/$threadId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudyGuideStepsRoute = StudyGuideStepsRouteImport.update({
+  id: '/study-guide_/steps',
+  path: '/study-guide/steps',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudyGuideLessonsSubjectIdLessonIdRoute =
+  StudyGuideLessonsSubjectIdLessonIdRouteImport.update({
+    id: '/study-guide_/lessons/$subjectId/$lessonId',
+    path: '/study-guide/lessons/$subjectId/$lessonId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -215,7 +228,9 @@ export interface FileRoutesByFullPath {
   '/api/study-chat': typeof ApiStudyChatRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
   '/study-guide/$threadId': typeof StudyGuideThreadIdRoute
+  '/study-guide/steps': typeof StudyGuideStepsRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/study-guide/lessons/$subjectId/$lessonId': typeof StudyGuideLessonsSubjectIdLessonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -246,7 +261,9 @@ export interface FileRoutesByTo {
   '/api/study-chat': typeof ApiStudyChatRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
   '/study-guide/$threadId': typeof StudyGuideThreadIdRoute
+  '/study-guide/steps': typeof StudyGuideStepsRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/study-guide/lessons/$subjectId/$lessonId': typeof StudyGuideLessonsSubjectIdLessonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -278,7 +295,9 @@ export interface FileRoutesById {
   '/api/study-chat': typeof ApiStudyChatRoute
   '/courses_/$subjectId': typeof CoursesSubjectIdRoute
   '/study-guide_/$threadId': typeof StudyGuideThreadIdRoute
+  '/study-guide_/steps': typeof StudyGuideStepsRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/study-guide_/lessons/$subjectId/$lessonId': typeof StudyGuideLessonsSubjectIdLessonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -311,7 +330,9 @@ export interface FileRouteTypes {
     | '/api/study-chat'
     | '/courses/$subjectId'
     | '/study-guide/$threadId'
+    | '/study-guide/steps'
     | '/.lovable/oauth/consent'
+    | '/study-guide/lessons/$subjectId/$lessonId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -342,7 +363,9 @@ export interface FileRouteTypes {
     | '/api/study-chat'
     | '/courses/$subjectId'
     | '/study-guide/$threadId'
+    | '/study-guide/steps'
     | '/.lovable/oauth/consent'
+    | '/study-guide/lessons/$subjectId/$lessonId'
   id:
     | '__root__'
     | '/'
@@ -373,7 +396,9 @@ export interface FileRouteTypes {
     | '/api/study-chat'
     | '/courses_/$subjectId'
     | '/study-guide_/$threadId'
+    | '/study-guide_/steps'
     | '/.lovable/oauth/consent'
+    | '/study-guide_/lessons/$subjectId/$lessonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -405,7 +430,9 @@ export interface RootRouteChildren {
   ApiStudyChatRoute: typeof ApiStudyChatRoute
   CoursesSubjectIdRoute: typeof CoursesSubjectIdRoute
   StudyGuideThreadIdRoute: typeof StudyGuideThreadIdRoute
+  StudyGuideStepsRoute: typeof StudyGuideStepsRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  StudyGuideLessonsSubjectIdLessonIdRoute: typeof StudyGuideLessonsSubjectIdLessonIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -606,11 +633,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudyGuideThreadIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/study-guide_/steps': {
+      id: '/study-guide_/steps'
+      path: '/study-guide/steps'
+      fullPath: '/study-guide/steps'
+      preLoaderRoute: typeof StudyGuideStepsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
       fullPath: '/.lovable/oauth/consent'
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study-guide_/lessons/$subjectId/$lessonId': {
+      id: '/study-guide_/lessons/$subjectId/$lessonId'
+      path: '/study-guide/lessons/$subjectId/$lessonId'
+      fullPath: '/study-guide/lessons/$subjectId/$lessonId'
+      preLoaderRoute: typeof StudyGuideLessonsSubjectIdLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -646,7 +687,10 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStudyChatRoute: ApiStudyChatRoute,
   CoursesSubjectIdRoute: CoursesSubjectIdRoute,
   StudyGuideThreadIdRoute: StudyGuideThreadIdRoute,
+  StudyGuideStepsRoute: StudyGuideStepsRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  StudyGuideLessonsSubjectIdLessonIdRoute:
+    StudyGuideLessonsSubjectIdLessonIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

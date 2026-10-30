@@ -23,6 +23,8 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import shield from "@/assets/bridgelib-shield.png";
+import { StudyRecommendationLink } from './StudyRecommendationLink';
+const studyMessageComponents = { a: StudyRecommendationLink };
 function StudyConversation({
   threadId,
   initialMessages,
@@ -78,7 +80,7 @@ function StudyConversation({
               <MessageContent>
                 {m.parts.map((part, i) =>
                   part.type === "text" ? (
-                    <MessageResponse key={i}>{part.text}</MessageResponse>
+                    <MessageResponse key={i} components={studyMessageComponents}>{part.text}</MessageResponse>
                   ) : part.type === "reasoning" ? (
                     <details className="bl-study-reasoning" key={i}>
                       <summary>Study analysis</summary>
@@ -144,6 +146,7 @@ export function StudyGuide({ threadId }: { threadId?: string }) {
           <h1>Study Guide</h1>
           <p>Personalized next study steps</p>
         </div>
+        <Link to="/study-guide/steps" className="bl-btn bl-btn-outline">My study steps <ArrowRight size={16}/></Link>
       </div>
       {q.error ? (
         <div className="bl-study-unavailable">
