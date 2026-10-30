@@ -51,11 +51,13 @@ import heroImg from "@/assets/hero-student.jpg";
 import { PracticeView } from "@/components/practice/PracticeView";
 import { useQueryClient } from "@tanstack/react-query";
 import sunsetImg from "@/assets/liberia-sunset.jpg";
-import homeHeroImg from '@/assets/home-hero-girl.jpg';
+import homeHeroImg from '@/assets/reference-home-hero.jpg';
 import wassceImg from '@/assets/wassce-hero.jpg';
 import joinImg from '@/assets/hero-student.jpg';
 import shieldImg from '@/assets/bridgelib-shield.png';
 import { FeaturedCourses } from '@/components/learning/FeaturedCourses';
+import { useServerFn } from '@tanstack/react-start';
+import { practiceFeedback } from '@/lib/reference.functions';
 
 type AuthMode = "signup" | "login";
 type LearnerPath = "school_learner" | "wassce_candidate" | "independent_learner";
@@ -1502,7 +1504,7 @@ export function BridgeHome() {
           </p>
           <div className="bl-cats">
             {learningCategories.map((c) => (
-              <Link to="/courses" className="bl-card bl-cat" key={c}>
+              <Link to="/courses" search={{category:c}} className="bl-card bl-cat" key={c}>
                 <SubjectIcon name={c} />
                 <span className="bl-cat-row">
                   {c} <ArrowRight size={16} />
@@ -1580,91 +1582,6 @@ export function BridgeHome() {
               <button className="bl-btn bl-btn-red" onClick={() => openAuth("signup")}>
                 Get Started Free <ArrowRight size={18} />
               </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="section" id="features">
-          <div className="bridge-wrap">
-            <div className="section-heading">
-              <p className="eyebrow">ONE CONNECTED PLATFORM</p>
-              <h2 className="section-title">
-                Learning belongs
-                <br />
-                within reach.
-              </h2>
-              <p>
-                BridgeLIB is being built to connect learning, teaching, and school life in one
-                secure place—with tools designed for learners across Liberia.
-              </p>
-            </div>
-
-            <div className="feature-grid">
-              {[
-                {
-                  icon: <BookOpen />,
-                  bg: "blue-bg",
-                  title: "Lessons & subjects",
-                  text: "Organize learning by education level, grade, subject, and topic.",
-                },
-                {
-                  icon: <Check />,
-                  bg: "green-bg",
-                  title: "Practice & exams",
-                  text: "Answer questions, review explanations, and prepare for examinations.",
-                },
-                {
-                  icon: <UsersRound />,
-                  bg: "violet-bg",
-                  title: "Classes & teachers",
-                  text: "Give teachers a place to manage classes and student work.",
-                },
-                {
-                  icon: <MapPin />,
-                  bg: "amber-bg",
-                  title: "Learning across Liberia",
-                  text: "Make space for schools and learners from every county.",
-                },
-              ].map((item) => (
-                <article className="feature-card" key={item.title}>
-                  <div className={`feature-icon ${item.bg}`}>{item.icon}</div>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section soft" id="pathways">
-          <div className="bridge-wrap">
-            <div className="section-heading">
-              <p className="eyebrow">CHOOSE YOUR PATH</p>
-              <h2 className="section-title">
-                One account.
-                <br />
-                Your learning journey.
-              </h2>
-              <p>
-                Choose the path that best describes your current learning goal. You can update
-                learning details later.
-              </p>
-            </div>
-
-            <div className="path-grid">
-              {paths.map((path) => (
-                <article
-                  className={`path-card ${path.id === "wassce_candidate" ? "featured" : ""}`}
-                  key={path.id}
-                >
-                  <span className="path-number">{path.number}</span>
-                  <h3>{path.title}</h3>
-                  <p>{path.description}</p>
-                  <button className="text-button" onClick={() => openAuth("signup", path.id)}>
-                    Choose this path <ArrowRight size={15} />
-                  </button>
-                </article>
-              ))}
             </div>
           </div>
         </section>
@@ -1960,6 +1877,8 @@ export function BridgeHome() {
 }
 
 export function PracticePage() {
+  const feedback = useServerFn(practiceFeedback);
+  const feedbackVersion = useRef(0);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [subjectId, setSubjectId] = useState("");
   useEffect(() => { const requested = new URLSearchParams(window.location.search).get('subject'); if (requested) setSubjectId(requested); }, []);
@@ -2025,6 +1944,7 @@ export function PracticePage() {
     setLoading(true);
     setErrorMessage("");
     setAuthRequired(false);
+    feedbackVersion.current += 1;
     setAnswers({});
     setReview([]);
     setResult(null);
@@ -2177,7 +2097,24 @@ export function PracticePage() {
     }
   }, [secondsLeft, examStarted, result, submitting]);
 
+  async function answerQuestion(qid: string, oid: string) {
+    if (result || submitting) return;
+    const version = feedbackVersion.current;
+    setAnswers(prev => ({ ...prev, [qid]: oid }));
+    const question = questions.find(q => q.id === qid);
+    if (!question) return;
+    try {
+      const item = isDemoExam ? {
+        question_id: qid, is_correct: oid === question.correct_option,
+        correct_option: question.correct_option ?? '', explanation: question.explanation,
+      } : await feedback({ data: { question_id: qid, selected_option: oid } });
+      if (version !== feedbackVersion.current) return;
+      setReview(prev => [...prev.filter(r => r.question_id !== qid), { ...item, prompt: question.prompt }]);
+    } catch { setErrorMessage('Immediate feedback is waiting for the original data connection. You can still submit your test for marking.'); }
+  }
+
   function resetPractice() {
+    feedbackVersion.current += 1;
     setResult(null);
     setReview([]);
     setQuestions([]);
@@ -2192,14 +2129,14 @@ export function PracticePage() {
 
   return (
     <div className="bl-site">
-      <SiteHeader />
+      <SiteHeader student />
       <PracticeView
         subjects={subjects}
         subjectId={subjectId}
         onSubject={(id) => { setSubjectId(id); setErrorMessage(""); }}
         questions={questions}
         answers={answers}
-        onAnswer={(qid, oid) => setAnswers((prev) => ({ ...prev, [qid]: oid }))}
+        onAnswer={(qid, oid) => void answerQuestion(qid, oid)}
         result={result}
         review={review}
         secondsLeft={secondsLeft}
