@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
   ArrowLeft, ArrowRight, BarChart3, BookOpen, CalendarClock, ClipboardCheck, Eye, FileText,
   GraduationCap, House, Lightbulb, LineChart, ListChecks, LogOut, NotebookText, Send, Settings,
   Timer, TimerReset, User,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import heroImg from "@/assets/home-hero-girl.jpg";
+import heroImg from "@/assets/reference-practice-hero.jpg";
+import { StudentSidebar } from "@/components/learning/StudentSidebar";
+import { Button } from "@/components/ui/button";
 
 type Option = { id: string; text: string };
 type Question = { id: string; prompt: string; options: Option[]; explanation: string | null; exam_type: string | null; correct_option?: string };
@@ -38,20 +39,9 @@ export type PracticeViewProps = {
 type Status = "current" | "correct" | "incorrect" | "answered" | "empty";
 
 export function PracticeView(p: PracticeViewProps) {
-  const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
-  const [profileName, setProfileName] = useState<string | null>(null);
 
   useEffect(() => { setCurrent(0); }, [p.questions]);
-  useEffect(() => {
-    void supabase.auth.getUser().then(({ data }) => {
-      const u = data.user;
-      if (!u) return;
-      const meta = u.user_metadata as Record<string, unknown>;
-      const name = typeof meta["full_name"] === "string" ? meta["full_name"] : u.email?.split("@")[0];
-      setProfileName(name ?? null);
-    });
-  }, []);
 
   const subjectName = p.subjects.find((s) => String(s.id) === p.subjectId)?.name ?? "Practice";
   const reviewById = useMemo(() => new Map(p.review.map((r) => [r.question_id, r])), [p.review]);
@@ -81,11 +71,6 @@ export function PracticeView(p: PracticeViewProps) {
     document.getElementById("pt-question")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  async function logout() {
-    await supabase.auth.signOut();
-    void navigate({ to: "/" });
-  }
-
   const r = q ? reviewById.get(q.id) : undefined;
   const selected = q ? p.answers[q.id] : undefined;
   const correctId = q && r ? q.options.find((o) => o.text === r.correct_option || o.id === r.correct_option)?.id : undefined;
@@ -93,28 +78,7 @@ export function PracticeView(p: PracticeViewProps) {
 
   return (
     <main className="bl-pt">
-      <aside className="bl-pt-side" aria-label="Student menu">
-        <div className="bl-pt-user">
-          <span className="bl-pt-avatar"><User size={22} /></span>
-          <div><strong>{profileName ?? "Guest"}</strong><span>Student</span></div>
-        </div>
-        <nav>
-          <Link to="/dashboard"><House size={18} />Dashboard</Link>
-          <Link to="/courses"><BookOpen size={18} />My Courses</Link>
-          <Link to="/practice" className="is-active"><ClipboardCheck size={18} />Quizzes &amp; Practice</Link>
-          <Link to="/dashboard"><BarChart3 size={18} />My Progress</Link>
-          <Link to="/wassce"><GraduationCap size={18} />WASSCE</Link>
-          <hr />
-          <Link to="/settings"><Settings size={18} />Settings</Link>
-          {profileName
-            ? <button type="button" onClick={() => void logout()}><LogOut size={18} />Logout</button>
-            : <Link to="/" search={{ auth: "login" } as never}><LogOut size={18} />Login</Link>}
-        </nav>
-        <div className="bl-pt-side-card">
-          <strong>Learn Today, Build Tomorrow.</strong>
-          <span>Better education. A brighter Liberia.</span>
-        </div>
-      </aside>
+      <StudentSidebar />
 
       <div className="bl-pt-main">
         <section className="bl-pt-hero">
@@ -148,9 +112,9 @@ export function PracticeView(p: PracticeViewProps) {
               {p.subjects.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
             <p>Up to 20 questions per session · 30-minute timer</p>
-            <button type="button" className="bl-pt-primary" disabled={p.loading || !p.subjectId} onClick={p.onStart}>
+            <Button type="button" className="bl-pt-primary" disabled={p.loading || !p.subjectId} onClick={p.onStart}>
               {p.loading ? "Loading…" : "Start Practice"} <ArrowRight size={16} />
-            </button>
+            </Button>
           </section>
         )}
 
@@ -175,8 +139,8 @@ export function PracticeView(p: PracticeViewProps) {
                   {q.options.map((o, i) => {
                     const cls = [
                       selected === o.id ? "is-selected" : "",
-                      r && o.id === correctId ? "is-correct" : "",
-                      r && selected === o.id && !r.is_correct ? "is-wrong" : "",
+                      p.result && r && o.id === correctId ? "is-correct" : "",
+                      p.result && r && selected === o.id && !r.is_correct ? "is-wrong" : "",
                     ].join(" ");
                     return (
                       <label key={o.id} className={cls}>
@@ -190,17 +154,17 @@ export function PracticeView(p: PracticeViewProps) {
                 {r && (
                   <div className="bl-pt-explain">
                     <Lightbulb size={18} />
-                    <div><strong>{r.is_correct ? "Correct" : selected ? "Incorrect" : "Not answered"} — Answer: {r.correct_option}</strong>
+                    <div><strong>Explanation</strong>
                       {r.explanation && <p>{r.explanation}</p>}</div>
                   </div>
                 )}
-                {!r && !p.result && <p className="bl-pt-hint">Explanations appear after you submit the test.</p>}
+                {!r && !p.result && <p className="bl-pt-hint">Choose an answer to see its explanation.</p>}
               </div>
               <div className="bl-pt-nav">
-                <button type="button" className="bl-pt-outline" disabled={current === 0} onClick={() => setCurrent((c) => c - 1)}><ArrowLeft size={16} />Previous</button>
+                <Button type="button" className="bl-pt-outline" disabled={current === 0} onClick={() => setCurrent((c) => c - 1)}><ArrowLeft size={16} />Previous</Button>
                 {current < total - 1
-                  ? <button type="button" className="bl-pt-primary" onClick={() => setCurrent((c) => c + 1)}>Next<ArrowRight size={16} /></button>
-                  : !p.result && <button type="button" className="bl-pt-primary" disabled={p.submitting} onClick={p.onSubmit}>{p.submitting ? "Marking…" : "Submit Test"}<Send size={16} /></button>}
+                  ? <Button type="button" className="bl-pt-primary" onClick={() => setCurrent((c) => c + 1)}>Next<ArrowRight size={16} /></Button>
+                  : !p.result && <Button type="button" className="bl-pt-primary" disabled={p.submitting} onClick={p.onSubmit}>{p.submitting ? "Marking…" : "Submit Test"}<Send size={16} /></Button>}
               </div>
             </section>
 
@@ -216,10 +180,10 @@ export function PracticeView(p: PracticeViewProps) {
                   <span>{answered} of {total} questions</span>
                 </div>
                 <ul className="bl-pt-stats">
-                  {p.result ? <>
+                  {<>
                     <li><i className="ok" />Correct<b>{correct}</b></li>
                     <li><i className="bad" />Incorrect<b>{incorrect}</b></li>
-                  </> : <li><i className="ans" />Answered<b>{answered}</b></li>}
+                  </>}
                   <li><i className="none" />Not Answered<b>{total - answered}</b></li>
                 </ul>
               </section>
@@ -227,24 +191,23 @@ export function PracticeView(p: PracticeViewProps) {
                 <h3>Question Navigator</h3>
                 <div className="bl-pt-navgrid">
                   {p.questions.map((x, i) => (
-                    <button key={x.id} type="button" className={`s-${statusOf(i)}`} aria-label={`Question ${i + 1}`} onClick={() => setCurrent(i)}>{i + 1}</button>
+                    <Button key={x.id} type="button" className={`s-${statusOf(i)}`} aria-label={`Question ${i + 1}`} onClick={() => setCurrent(i)}>{i + 1}</Button>
                   ))}
                 </div>
                 <ul className="bl-pt-legend">
                   <li><i className="s-current" />Current Question</li>
-                  {p.result ? <><li><i className="s-correct" />Answered Correctly</li><li><i className="s-incorrect" />Answered Incorrectly</li></>
-                    : <li><i className="s-answered" />Answered</li>}
+                  <li><i className="s-correct" />Answered Correctly</li><li><i className="s-incorrect" />Answered Incorrectly</li>
                   <li><i className="s-empty" />Not Answered</li>
                 </ul>
               </section>
               <section className="bl-pt-card bl-pt-actions">
                 <h3>Quick Actions</h3>
                 {p.result
-                  ? <button type="button" className="bl-pt-primary" onClick={() => { p.onReset(); }}><TimerReset size={16} />Practise Again</button>
-                  : <button type="button" className="bl-pt-primary" disabled={p.submitting} onClick={p.onSubmit}><Send size={16} />{p.submitting ? "Marking…" : "Submit Test"}</button>}
-                <button type="button" className="bl-pt-outline" onClick={reviewAnswers}><Eye size={16} />Review Answers</button>
-                <button type="button" className="bl-pt-outline" disabled={!p.result} title={p.result ? "" : "Submit the test to see results"}
-                  onClick={() => document.getElementById("pt-results")?.scrollIntoView({ behavior: "smooth" })}><BarChart3 size={16} />View Results</button>
+                  ? <Button type="button" className="bl-pt-primary" onClick={() => { p.onReset(); }}><TimerReset size={16} />Practise Again</Button>
+                  : <Button type="button" className="bl-pt-primary" disabled={p.submitting} onClick={p.onSubmit}><Send size={16} />{p.submitting ? "Marking…" : "Submit Test"}</Button>}
+                <Button type="button" className="bl-pt-outline" onClick={reviewAnswers}><Eye size={16} />Review Answers</Button>
+                <Button type="button" className="bl-pt-outline" disabled={!p.result} title={p.result ? "" : "Submit the test to see results"}
+                  onClick={() => document.getElementById("pt-results")?.scrollIntoView({ behavior: "smooth" })}><BarChart3 size={16} />View Results</Button>
               </section>
             </div>
           </div>
@@ -260,10 +223,10 @@ export function PracticeView(p: PracticeViewProps) {
 
         <section className="bl-pt-features">
           {[
-            { icon: NotebookText, title: "Past Questions", text: "Access WASSCE-style questions with detailed answers and explanations.", cta: "Start Practicing", onClick: () => document.getElementById("practice-subject")?.focus() ?? reviewAnswers() },
+            { icon: NotebookText, title: "Past Questions", text: "Access WASSCE-style questions with detailed answers and explanations.", cta: "Start Practicing", onClick: () => { if (inTest) reviewAnswers(); else document.getElementById("practice-subject")?.focus(); } },
             { icon: Timer, title: "Mock Tests", text: "Timed practice tests to improve your speed and accuracy.", cta: "Start Test", onClick: () => { if (inTest) reviewAnswers(); else if (p.subjectId) p.onStart(); else document.getElementById("practice-subject")?.focus(); } },
             { icon: FileText, title: "Study Notes", text: "Notes and revision materials for all subjects.", cta: "View Notes", to: "/courses" as const },
-            { icon: LineChart, title: "Performance Tracking", text: "Monitor your progress, identify weak areas and improve.", cta: "View Progress", to: "/dashboard" as const },
+            { icon: LineChart, title: "Performance Tracking", text: "Monitor your progress, identify weak areas and improve.", cta: "View Progress", to: "/progress" as const },
           ].map((f) => (
             <article key={f.title} className="bl-pt-feature">
               <span className="ico"><f.icon size={20} /></span>
@@ -271,7 +234,7 @@ export function PracticeView(p: PracticeViewProps) {
               <p>{f.text}</p>
               {"to" in f && f.to
                 ? <Link to={f.to}>{f.cta} <ArrowRight size={14} /></Link>
-                : <button type="button" onClick={f.onClick}>{f.cta} <ArrowRight size={14} /></button>}
+                : <Button type="button" onClick={f.onClick}>{f.cta} <ArrowRight size={14} /></Button>}
             </article>
           ))}
         </section>
