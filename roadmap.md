@@ -1,5 +1,9 @@
 # BridgeLIB completion
 
+- [ ] Remove demo test fallback; use published question bank only and add original Liberian revision materials with honest labels.
+- [ ] Build Practice Study Notes and Past Questions pages with real published records and explicit unavailable states.
+- [ ] Extend self-signup with phone, photo and school; verify hosted email signup settings and validate fields.
+- [ ] Connect official schedules and verified student badges: requires authoritative records; never fabricate them.
 - [x] Build actionable Study Guide next-step and lesson pages, connect recommendation links, and check dashboard navigation; signed-in lesson completion remains unverified with the account-testing blocker below.
 - [x] Connect dashboard certificate totals to exact owner-scoped issued records and show explicit missing exam-date and student-verification states; ten focused tests and signed-out phone/desktop checks passed.
 - [x] Build separate Study Guide conversation routes, account-history code, streaming AI Gateway recommendations and dashboard links; real Gateway sample recommendation passed.
