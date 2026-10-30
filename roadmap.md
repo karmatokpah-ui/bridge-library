@@ -1,5 +1,7 @@
 # BridgeLIB completion
 
+- [ ] Match the supplied home, courses, and practice images, including previously omitted features; retain real data and the original backend.
+
 - [x] Confirm the existing external Supabase connection and record database-change authorization.
 - [x] Review live schema, access policies, security warnings, and existing automated checks.
 - [x] Approve the completion plan after the feature inventory.

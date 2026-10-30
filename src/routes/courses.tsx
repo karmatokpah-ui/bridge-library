@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, BookOpenText, ChevronRight, Home, Laptop, Search, Target, Layers3 } from "lucide-react";
-import heroImg from "@/assets/home-hero-girl.jpg";
+import heroImg from "@/assets/reference-home-hero.jpg";
 import mathImg from "@/assets/course-math.jpg";
 import englishImg from "@/assets/course-english.jpg";
 import scienceImg from "@/assets/course-science.jpg";
-import socialImg from "@/assets/liberia-sunset.jpg";
+import socialImg from "@/assets/reference-social-studies.jpg";
 import wassceImg from "@/assets/wassce-hero.jpg";
 import aboutImg from "@/assets/about-students.jpg";
 import ctaImg from "@/assets/courses-cta.jpg";
+import { CourseMetrics, useCourseMetrics } from '@/components/learning/CourseMetrics';
+import { Button } from '@/components/ui/button';
 import {
   EmptyState,
   SiteLayout,
@@ -35,8 +37,10 @@ export const Route = createFileRoute("/courses")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  validateSearch: (search: Record<string, unknown>): { q?: string } =>
-    typeof search["q"] === "string" && search["q"] ? { q: search["q"] } : {},
+  validateSearch: (search: Record<string, unknown>): { q?: string; category?: string } => ({
+    ...(typeof search['q'] === 'string' && search['q'] ? { q: search['q'] } : {}),
+    ...(typeof search['category'] === 'string' && search['category'] ? { category: search['category'] } : {}),
+  }),
   component: CoursesPage,
 });
 
@@ -65,11 +69,13 @@ const popularOrder = ["math", "english", "biology", "chemistry", "physics", "gov
 
 function CoursesPage() {
   const { subjects, state } = useSubjects();
-  const { q: initialQ = "" } = Route.useSearch();
+  const metrics = useCourseMetrics();
+  const { q: initialQ = "", category: initialCategory = 'All' } = Route.useSearch();
   const [draft, setDraft] = useState(initialQ);
   const [query, setQuery] = useState(initialQ);
   useEffect(() => { setDraft(initialQ); setQuery(initialQ); }, [initialQ]);
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(initialCategory);
+  useEffect(() => {setCategory(initialCategory);},[initialCategory]);
   const [sort, setSort] = useState("popular");
 
   const filtered = useMemo(() => {
@@ -88,9 +94,9 @@ function CoursesPage() {
     return [...list].sort((a, b) =>
       sort === "az" ? a.name.localeCompare(b.name)
       : sort === "za" ? b.name.localeCompare(a.name)
-      : rank(a.name) - rank(b.name) || a.name.localeCompare(b.name),
+       : Number(metrics.data?.metrics.find(m=>Number(m.subject_id)===b.id)?.student_count ?? 0) - Number(metrics.data?.metrics.find(m=>Number(m.subject_id)===a.id)?.student_count ?? 0) || rank(a.name) - rank(b.name) || a.name.localeCompare(b.name),
     );
-  }, [subjects, query, category, sort]);
+  }, [subjects, query, category, sort, metrics.data]);
 
   const popular = filtered.slice(0, 6);
   const more = filtered.slice(6);
@@ -115,16 +121,16 @@ function CoursesPage() {
             <input type="search" placeholder="Search for a course, subject, or topic…" value={draft}
               onChange={(e) => { setDraft(e.target.value); if (!e.target.value) setQuery(""); }} aria-label="Search courses" />
           </label>
-          <button className="bl-btn bl-btn-primary">Search</button>
+          <Button>Search</Button>
         </form>
 
         <div className="bl-chips bl-chips-icons" role="tablist" aria-label="Filter by category">
           {["All", ...learningCategories].map((c) => (
-            <button key={c} type="button" role="tab" aria-selected={category === c}
+            <Button key={c} type="button" role="tab" aria-selected={category === c}
               className={`bl-chip ${category === c ? "active" : ""}`} onClick={() => setCategory(c)}>
               {c === "All" ? <span className="bl-icon-tile blue" aria-hidden="true"><Layers3 size={18} /></span> : <SubjectIcon name={c} />}
               {c === "All" ? "All Subjects" : c}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -154,11 +160,12 @@ function CoursesPage() {
           <div className="bl-grid-3">
             {popular.map((s) => (
               <article className="bl-card bl-photo-course" key={s.id}>
-                <img src={subjectImage(s.name)} alt="" loading="lazy" width={1024} height={656} />
+                <div className="bl-course-photo"><img src={subjectImage(s.name)} alt="" loading="lazy" width={1024} height={656} /><CourseMetrics subjectId={s.id} lessonsOnly/></div>
                 <div className="bl-photo-course-body">
                   <SubjectIcon name={s.name} />
                   <h3>{s.name}</h3>
                   <p>{s.description || "Lessons and practice questions for this subject."}</p>
+                  <CourseMetrics subjectId={s.id}/>
                   <Link to="/courses/$subjectId" params={{ subjectId: String(s.id) }} className="bl-btn bl-btn-primary bl-btn-sm">
                     View Course <ArrowRight size={16} />
                   </Link>
@@ -182,6 +189,7 @@ function CoursesPage() {
                       <p>{s.description || "Lessons and practice questions."}</p>
                     </div>
                   </div>
+                  <CourseMetrics subjectId={s.id} lessonsOnly/><CourseMetrics subjectId={s.id}/>
                   <Link to="/courses/$subjectId" params={{ subjectId: String(s.id) }} className="bl-btn bl-btn-primary bl-btn-sm">
                     View Course <ArrowRight size={16} />
                   </Link>

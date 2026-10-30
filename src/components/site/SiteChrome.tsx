@@ -19,10 +19,16 @@ import {
   Monitor,
   X,
   type LucideIcon,
+  Bell,
+  User,
+  MapPin,
+  Phone,
+  Mail,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import shieldImg from "@/assets/bridgelib-shield.png";
 import { safeUrl, useSiteContent, type SiteContent } from "@/lib/site-content";
+import { Button } from "@/components/ui/button";
 
 const socials = [
   ["facebook", "Facebook", Facebook],
@@ -41,9 +47,9 @@ export function ContactLines({ content }: { content?: SiteContent } = {}) {
   });
   return (
     <>
-      {c.contact_address ? <span>{c.contact_address}</span> : null}
-      {c.contact_phone ? <a href={`tel:${c.contact_phone.replace(/[^+\d]/g, "")}`}>{c.contact_phone}</a> : null}
-      {c.contact_email ? <a href={`mailto:${c.contact_email}`}>{c.contact_email}</a> : null}
+      {c.contact_address ? <span className="bl-contact-line"><MapPin size={15}/>{c.contact_address}</span> : null}
+      {c.contact_phone ? <a className="bl-contact-line" href={`tel:${c.contact_phone.replace(/[^+\d]/g, "")}` }><Phone size={15}/>{c.contact_phone}</a> : null}
+      {c.contact_email ? <a className="bl-contact-line" href={`mailto:${c.contact_email}`}><Mail size={15}/>{c.contact_email}</a> : null}
       {social.length ? (
         <span className="bl-socials">
           {social.map(({ href, label, Icon }) => (
@@ -88,7 +94,6 @@ const navLinks = [
   { to: "/courses", label: "Courses" },
   { to: "/wassce", label: "WASSCE" },
   { to: "/features", label: "Features" },
-  { to: "/practice", label: "Practice" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
@@ -110,7 +115,7 @@ export function useSignedIn() {
   return signedIn;
 }
 
-export function SiteHeader({ actions }: { actions?: ReactNode }) {
+export function SiteHeader({ actions, student = false }: { actions?: ReactNode; student?: boolean }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const signedIn = useSignedIn();
@@ -118,6 +123,16 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [term, setTerm] = useState("");
   const navigate = useNavigate();
+  const [noticesOpen, setNoticesOpen] = useState(false);
+  const [studentName, setStudentName] = useState("Guest");
+  useEffect(() => {
+    if (!student) return;
+    void supabase.auth.getUser().then(async ({ data }) => {
+      if (!data.user) return;
+      const profile = await supabase.from('profiles').select('full_name').eq('id',data.user.id).maybeSingle();
+      setStudentName(profile.data?.full_name || data.user.user_metadata['full_name'] || 'Student');
+    });
+  }, [student]);
   useEffect(() => { setOpen(false); setSearchOpen(false); }, [pathname]);
 
   const defaultActions = signedIn ? (
@@ -136,7 +151,7 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
   );
 
   return (
-    <header className="bl-header">
+    <header className={`bl-header ${student ? 'bl-student-header' : ''}`}>
       <div className="bl-container bl-header-inner">
         <Logo />
         <nav className="bl-nav" aria-label="Main navigation">
@@ -152,12 +167,13 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
             </Link>
           ))}
         </nav>
-        <button type="button" className="bl-search-btn" aria-label="Search courses" aria-expanded={searchOpen}
+        <Button type="button" className="bl-search-btn" aria-label="Search courses" aria-expanded={searchOpen}
           onClick={() => setSearchOpen((v) => !v)}>
           <Search size={18} />
-        </button>
-        <div className="bl-header-actions">{actions ?? defaultActions}</div>
-        <button
+        </Button>
+        {student && <div className="bl-student-actions"><Button className="bl-search-btn" aria-label="Notifications" aria-expanded={noticesOpen} onClick={()=>setNoticesOpen(v=>!v)}><Bell size={18}/></Button><Link to="/profile" className="bl-header-profile"><User size={22}/><span><strong>{studentName}</strong><small>Student</small></span></Link>{noticesOpen&&<div className="bl-notifications"><strong>Notifications</strong><Link to="/dashboard">View class assignments</Link><Link to="/progress">View saved practice results</Link></div>}</div>}
+        {!student && <div className="bl-header-actions">{actions ?? defaultActions}</div>}
+        <Button
           type="button"
           className="bl-menu-btn"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -165,14 +181,14 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
           onClick={() => setOpen((v) => !v)}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        </Button>
       </div>
       {searchOpen && (
         <form className="bl-container bl-header-search" role="search"
           onSubmit={(e) => { e.preventDefault(); void navigate({ to: "/courses", search: term.trim() ? { q: term.trim() } : {} }); setSearchOpen(false); }}>
           <input autoFocus type="search" value={term} onChange={(e) => setTerm(e.target.value)}
             placeholder="Search for a course, subject, or topic…" aria-label="Search courses" />
-          <button className="bl-btn bl-btn-primary bl-btn-sm">Search</button>
+          <Button className="bl-btn-sm">Search</Button>
         </form>
       )}
       {open && (
@@ -214,7 +230,7 @@ export function SiteFooter() {
           <Link to="/courses">Study Notes</Link>
           <Link to="/practice">Mock Tests</Link>
           <Link to="/courses">Video Lessons</Link>
-          <Link to="/dashboard">Certificates &amp; Progress</Link>
+          <Link to="/certificates">Certificates</Link>
         </div>
         <div>
           <h4>Help &amp; Support</h4>
