@@ -1858,6 +1858,7 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 
 /* Student dashboard reference: compact editorial learning workspace. */
 .bl-sd-site { background: var(--bl-soft); }
+.bl-student-verification { font-size: .72rem; line-height: 1.5; color: var(--bl-on-dark-muted); padding: 8px; border: 1px solid var(--bl-blue); border-radius: 6px; margin: 0; max-width: 100%; overflow-wrap: anywhere; }
 .bl-sd-site .bl-header { background: var(--bl-navy); }
 .bl-sd-site .bl-header .bl-logo, .bl-sd-site .bl-header .bl-nav-link, .bl-sd-site .bl-header-profile, .bl-sd-site .bl-header .bl-search-btn.bl-btn, .bl-sd-site .bl-header .bl-menu-btn { color: var(--bl-on-dark); }
 .bl-sd-site .bl-header-profile small { color: var(--bl-on-dark-muted); }
