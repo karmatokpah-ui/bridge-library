@@ -1,5 +1,6 @@
 # BridgeLIB completion
 
+- [ ] Automatically track annual Ministry curriculum and education-plan updates at the supplied official links; verify publications and preserve version history before integrating teaching content. Activation requires a reliable readable source, scheduled checks and restored original-backend storage.
 - [x] Add issued-record completion certificate PDF downloads and Ministry curriculum source links, with explicit distinction from official exam credentials.
 - [ ] Verify live issued-certificate download: original certificate migration/connection and signed-in account remain unavailable.
 - [ ] Connect actual Ministry curriculum topics: supplied page could not be fetched and no direct documents were verified; needs accessible documents.
