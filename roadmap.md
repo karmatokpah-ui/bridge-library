@@ -1,5 +1,6 @@
 # BridgeLIB completion
 
+- [ ] Add issued-record certificate PDF downloads and inspect the supplied Ministry curriculum links for Study Guide integration.
 - [x] Remove demo test fallback; tests accept published database questions only; original Liberian revision notes and exercises are separate and honestly labeled.
 - [x] Build Practice Study Notes and Past Questions pages reading published lessons/papers, with unavailable states and original revision materials; public navigation and answer review verified.
 - [x] Extend self-signup with validated phone, school and photo selection; hosted email signup enabled, email confirmation required.
