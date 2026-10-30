@@ -29,11 +29,14 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SiteContentRouteImport } from './routes/site-content'
+import { Route as StudyGuideRouteImport } from './routes/study-guide'
 import { Route as TeacherRouteImport } from './routes/teacher'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WassceRouteImport } from './routes/wassce'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ApiStudyChatRouteImport } from './routes/api/study-chat'
 import { Route as CoursesSubjectIdRouteImport } from './routes/courses_.$subjectId'
+import { Route as StudyGuideThreadIdRouteImport } from './routes/study-guide_.$threadId'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const IndexRoute = IndexRouteImport.update({
@@ -136,6 +139,11 @@ const SiteContentRoute = SiteContentRouteImport.update({
   path: '/site-content',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudyGuideRoute = StudyGuideRouteImport.update({
+  id: '/study-guide',
+  path: '/study-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeacherRoute = TeacherRouteImport.update({
   id: '/teacher',
   path: '/teacher',
@@ -157,9 +165,19 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiStudyChatRoute = ApiStudyChatRouteImport.update({
+  id: '/api/study-chat',
+  path: '/api/study-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CoursesSubjectIdRoute = CoursesSubjectIdRouteImport.update({
   id: '/courses_/$subjectId',
   path: '/courses/$subjectId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudyGuideThreadIdRoute = StudyGuideThreadIdRouteImport.update({
+  id: '/study-guide_/$threadId',
+  path: '/study-guide/$threadId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
@@ -189,11 +207,14 @@ export interface FileRoutesByFullPath {
   '/progress': typeof ProgressRoute
   '/settings': typeof SettingsRoute
   '/site-content': typeof SiteContentRoute
+  '/study-guide': typeof StudyGuideRoute
   '/teacher': typeof TeacherRoute
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/study-chat': typeof ApiStudyChatRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
+  '/study-guide/$threadId': typeof StudyGuideThreadIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
@@ -217,11 +238,14 @@ export interface FileRoutesByTo {
   '/progress': typeof ProgressRoute
   '/settings': typeof SettingsRoute
   '/site-content': typeof SiteContentRoute
+  '/study-guide': typeof StudyGuideRoute
   '/teacher': typeof TeacherRoute
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/study-chat': typeof ApiStudyChatRoute
   '/courses/$subjectId': typeof CoursesSubjectIdRoute
+  '/study-guide/$threadId': typeof StudyGuideThreadIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
@@ -246,11 +270,14 @@ export interface FileRoutesById {
   '/progress': typeof ProgressRoute
   '/settings': typeof SettingsRoute
   '/site-content': typeof SiteContentRoute
+  '/study-guide': typeof StudyGuideRoute
   '/teacher': typeof TeacherRoute
   '/terms': typeof TermsRoute
   '/wassce': typeof WassceRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/study-chat': typeof ApiStudyChatRoute
   '/courses_/$subjectId': typeof CoursesSubjectIdRoute
+  '/study-guide_/$threadId': typeof StudyGuideThreadIdRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
@@ -276,11 +303,14 @@ export interface FileRouteTypes {
     | '/progress'
     | '/settings'
     | '/site-content'
+    | '/study-guide'
     | '/teacher'
     | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
+    | '/api/study-chat'
     | '/courses/$subjectId'
+    | '/study-guide/$threadId'
     | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -304,11 +334,14 @@ export interface FileRouteTypes {
     | '/progress'
     | '/settings'
     | '/site-content'
+    | '/study-guide'
     | '/teacher'
     | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
+    | '/api/study-chat'
     | '/courses/$subjectId'
+    | '/study-guide/$threadId'
     | '/.lovable/oauth/consent'
   id:
     | '__root__'
@@ -332,11 +365,14 @@ export interface FileRouteTypes {
     | '/progress'
     | '/settings'
     | '/site-content'
+    | '/study-guide'
     | '/teacher'
     | '/terms'
     | '/wassce'
     | '/.well-known/oauth-protected-resource'
+    | '/api/study-chat'
     | '/courses_/$subjectId'
+    | '/study-guide_/$threadId'
     | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
@@ -361,11 +397,14 @@ export interface RootRouteChildren {
   ProgressRoute: typeof ProgressRoute
   SettingsRoute: typeof SettingsRoute
   SiteContentRoute: typeof SiteContentRoute
+  StudyGuideRoute: typeof StudyGuideRoute
   TeacherRoute: typeof TeacherRoute
   TermsRoute: typeof TermsRoute
   WassceRoute: typeof WassceRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiStudyChatRoute: typeof ApiStudyChatRoute
   CoursesSubjectIdRoute: typeof CoursesSubjectIdRoute
+  StudyGuideThreadIdRoute: typeof StudyGuideThreadIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -511,6 +550,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteContentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/study-guide': {
+      id: '/study-guide'
+      path: '/study-guide'
+      fullPath: '/study-guide'
+      preLoaderRoute: typeof StudyGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/teacher': {
       id: '/teacher'
       path: '/teacher'
@@ -539,11 +585,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/study-chat': {
+      id: '/api/study-chat'
+      path: '/api/study-chat'
+      fullPath: '/api/study-chat'
+      preLoaderRoute: typeof ApiStudyChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/courses_/$subjectId': {
       id: '/courses_/$subjectId'
       path: '/courses/$subjectId'
       fullPath: '/courses/$subjectId'
       preLoaderRoute: typeof CoursesSubjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study-guide_/$threadId': {
+      id: '/study-guide_/$threadId'
+      path: '/study-guide/$threadId'
+      fullPath: '/study-guide/$threadId'
+      preLoaderRoute: typeof StudyGuideThreadIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.lovable/oauth/consent': {
@@ -577,12 +637,15 @@ const rootRouteChildren: RootRouteChildren = {
   ProgressRoute: ProgressRoute,
   SettingsRoute: SettingsRoute,
   SiteContentRoute: SiteContentRoute,
+  StudyGuideRoute: StudyGuideRoute,
   TeacherRoute: TeacherRoute,
   TermsRoute: TermsRoute,
   WassceRoute: WassceRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiStudyChatRoute: ApiStudyChatRoute,
   CoursesSubjectIdRoute: CoursesSubjectIdRoute,
+  StudyGuideThreadIdRoute: StudyGuideThreadIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport

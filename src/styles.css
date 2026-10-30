@@ -1859,6 +1859,12 @@ body { background: var(--bl-bg); color: var(--bl-text); font-family: "Plus Jakar
 /* Student dashboard reference: compact editorial learning workspace. */
 .bl-sd-site { background: var(--bl-soft); }
 .bl-student-verification { font-size: .72rem; line-height: 1.5; color: var(--bl-on-dark-muted); padding: 8px; border: 1px solid var(--bl-blue); border-radius: 6px; margin: 0; max-width: 100%; overflow-wrap: anywhere; }
+.bl-btn-ghost { background: transparent; color: var(--bl-navy); border-color: transparent; }
+.bl-btn[data-size="icon-sm"], .bl-btn[data-size="icon-xs"] { width: 32px; height: 32px; min-height: 32px; padding: 4px; flex: none; }
+.bl-study-heading { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; }.bl-study-heading p { color: var(--bl-muted); font-size: .85rem; }
+.bl-study-layout { display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 20px; }.bl-study-threads { display: grid; align-content: start; gap: 8px; }.bl-study-threads form { display: grid; gap: 10px; margin-bottom: 12px; }.bl-study-threads input { border: 1px solid var(--bl-border); background: var(--bl-surface); padding: 10px; width: 100%; border-radius: 6px; }.bl-study-threads > a { padding: 12px; border-radius: 6px; color: var(--bl-navy); overflow-wrap: anywhere; }.bl-study-threads > a.active { background: var(--bl-blue); color: var(--bl-on-dark); }
+.bl-study-body { min-width: 0; }.bl-study-conversation { display: grid; gap: 16px; }.bl-study-transcript { height: 480px; border-bottom: 1px solid var(--bl-border); }.bl-study-conversation .is-user > div { background: var(--bl-navy); color: var(--bl-on-dark); }.bl-study-conversation .is-assistant > div { background: transparent; color: var(--bl-text); }.bl-study-reasoning { color: var(--bl-muted); font-size: .8rem; }.bl-study-unavailable { color: var(--bl-navy); display: grid; justify-items: start; gap: 16px; padding: 24px 0; }.bl-study-unavailable h2 { font-size: 1.2rem; font-weight: 700; }
+@media(max-width:700px) { .bl-study-layout { grid-template-columns: minmax(0,1fr); }.bl-study-transcript { height: 400px; } }
 .bl-sd-site .bl-header { background: var(--bl-navy); }
 .bl-sd-site .bl-header .bl-logo, .bl-sd-site .bl-header .bl-nav-link, .bl-sd-site .bl-header-profile, .bl-sd-site .bl-header .bl-search-btn.bl-btn, .bl-sd-site .bl-header .bl-menu-btn { color: var(--bl-on-dark); }
 .bl-sd-site .bl-header-profile small { color: var(--bl-on-dark-muted); }

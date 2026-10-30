@@ -17,6 +17,7 @@ export function StudentSidebar({ active = 'practice', verificationLabel }: { act
   {key:'my-courses',to:'/my-courses',label:'My Courses',Icon:BookOpen},
   {key:'practice',to:'/practice',label:'Quizzes & Practice',Icon:ClipboardCheck},
   {key:'progress',to:'/progress',label:'My Progress',Icon:BarChart3},
+  {key:'study-guide',to:'/study-guide',label:'Study Guide',Icon:BookOpen},
   {key:'certificates',to:'/certificates',label:'Certificates',Icon:GraduationCap},
   {key:'bookmarks',to:'/bookmarks',label:'Bookmarks',Icon:Bookmark},
   {key:'downloads',to:'/downloads',label:'Downloads',Icon:Download},

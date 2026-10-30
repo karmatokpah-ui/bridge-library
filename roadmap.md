@@ -1,7 +1,8 @@
 # BridgeLIB completion
 
 - [x] Connect dashboard certificate totals to exact owner-scoped issued records and show explicit missing exam-date and student-verification states; ten focused tests and signed-out phone/desktop checks passed.
-- [ ] Add signed-in AI study guidance grounded in dashboard records using AI Gateway; awaiting conversation/history preferences before implementation.
+- [x] Build separate Study Guide conversation routes, account-history code, streaming AI Gateway recommendations and dashboard links; real Gateway sample recommendation passed.
+- [ ] Activate and verify account-saved AI conversations: original-backend connection must be restored and pending `supabase/manual/study-conversations.sql` validated/applied; a signed-in test account is also unavailable. No browser-only storage substituted.
 - [x] Match the new student dashboard structure: welcome banner, shared student sidebar, course/stat cards, quick actions, progress, activity, upcoming exam preparation, goals editor and education banner; preserve real account data.
 - [ ] Verify dashboard real enrolled courses and goal saving: blocked by unavailable signed-in external account; official exam dates and student verification have no confirmed data source, and certificate counts await the pending original-backend migration.
 - [x] Align home, courses, and practice layouts; remove unrelated home sections; add all reference student menu destinations and course metric positions.
