@@ -1,5 +1,6 @@
 # BridgeLIB completion
 
+- [ ] Match the new student dashboard reference: welcome banner, shared student sidebar, course/stat cards, quick actions, progress, activity, upcoming exam preparation, goals editor and education banner; preserve real account data.
 - [x] Align home, courses, and practice layouts; remove unrelated home sections; add all reference student menu destinations and course metric positions.
 - [x] Implement bookmarks, ratings, completion certificates, downloads, profile, enrolled courses, progress and immediate practice feedback code on the original backend.
 - [ ] Activate bookmarks, ratings, certificates, public aggregate metrics and immediate real-question feedback: blocked by restoring the original editor data connection and applying the pending SQL to that project only.
